@@ -5,6 +5,19 @@ class Kpi(models.Model):
     # Assuming you have a Kpi model with at least a name field.
     name = models.CharField(max_length=255)
 
+    priorityForDoctor = models.IntegerField(default=9999)
+    priorityForParent = models.IntegerField(default=9999)
+    priorityForProject_manager = models.IntegerField(default=9999)
+    priorityForMachine_mantainer = models.IntegerField(default=9999)
+
+    linePlot = models.BooleanField(default=True)
+    barPlot = models.BooleanField(default=True)
+    piePlot = models.BooleanField(default=True)
+    radarPlot = models.BooleanField(default=True)
+    doughnutPlot = models.BooleanField(default=True)
+
+    isNew = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
 
@@ -12,10 +25,23 @@ class ChartType(models.TextChoices):
     LINE = 'line', _('Line')
     BAR = 'bar', _('Bar')
     PIE = 'pie', _('Pie')
-    SCATTER = 'scatter', _('Scatter')
+    RADAR = 'radar', _('Radar')
+    DOUGHNUT = 'doughnut' , _('Doughnut')
 
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
+    CATEGORY_CHOICES = [
+        ('doctor', 'Doctor'),
+        ('parent', 'Parent'),
+        ('project_manager', 'Project_manager'),
+        ('machine_mantainer', 'Machine_mantainer'),
+    ]
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        null=True,
+        blank=True
+    )
     FREQUENCY_CHOICES = [
         ('daily', 'Daily'),
         ('weekly', 'Weekly'),
@@ -99,10 +125,12 @@ class Alarm(models.Model):
     kpi = models.ForeignKey(
         Kpi,
         on_delete=models.CASCADE
+
     )
     user = models.ForeignKey(
         User,
         related_name='alarms',
+
         on_delete=models.CASCADE
     )
     min_value = models.FloatField()
