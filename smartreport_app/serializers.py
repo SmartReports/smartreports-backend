@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, User, Alarm
+from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = KpiReportElement
-        fields = ['kpi', 'chart_type']
+        fields = '__all__'
 
 class ReportTemplatePageSerializer(serializers.ModelSerializer):
     elements = KpiReportElementSerializer(many=True)
 
     class Meta:
         model = ReportTemplatePage
-        fields = ['layout', 'elements']
+        fields = '__all__'
 
 class ReportTemplateSerializer(serializers.ModelSerializer):
     pages = ReportTemplatePageSerializer(many=True)
@@ -45,10 +45,6 @@ class KpiSerializer(serializers.ModelSerializer):
         model = Kpi
         fields = '__all__'
     
-class UsersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
 
 class AlarmSerializer(serializers.ModelSerializer):
     class Meta:

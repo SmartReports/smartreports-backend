@@ -8,7 +8,6 @@ router.register(r'report-templates', views.ReportTemplateViewSet)
 router.register(r'report-template-pages', views.ReportTemplatePageViewSet)
 router.register(r'kpi-report-elements', views.KpiReportElementViewSet)
 router.register(r'kpi-list', views.KpiViewSet)
-router.register(r'users-list', views.UserViewSet)
 router.register(r'alarms-list', views.AlarmViewSet)
 
 # The API URLs are now determined automatically by the router.

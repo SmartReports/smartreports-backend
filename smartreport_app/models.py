@@ -1,6 +1,27 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
+class ChartType(models.TextChoices):
+    LINE = 'line', _('Line')
+    BAR = 'bar', _('Bar')
+    PIE = 'pie', _('Pie')
+    RADAR = 'radar', _('Radar')
+    DOUGHNUT = 'doughnut' , _('Doughnut')
+
+class UserType(models.TextChoices):
+    DOCTOR = 'doctor', _('Doctor')
+    PARENT = 'parent', _('Parent')
+    PROJECT_MANAGER = 'project_manager', _('Project Manager')
+    MACHINE_MAINTAINER = 'machine_maintainer', _('Machine Maintainer')
+
+class FrequencyType(models.TextChoices):
+    DAILY = 'daily', _('Daily')
+    WEEKLY = 'weekly', _('Weekly')
+    MONTHLY = 'monthly', _('Monthly')
+    YEARLY = 'yearly', _('Yearly')
+    QUARTERLY = 'quarterly', _('Quarterly')
+
 class Kpi(models.Model):
     # Assuming you have a Kpi model with at least a name field.
     name = models.CharField(max_length=255)
@@ -21,39 +42,18 @@ class Kpi(models.Model):
     def __str__(self):
         return self.name
 
-class ChartType(models.TextChoices):
-    LINE = 'line', _('Line')
-    BAR = 'bar', _('Bar')
-    PIE = 'pie', _('Pie')
-    RADAR = 'radar', _('Radar')
-    DOUGHNUT = 'doughnut' , _('Doughnut')
-
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
-    CATEGORY_CHOICES = [
-        ('doctor', 'Doctor'),
-        ('parent', 'Parent'),
-        ('project_manager', 'Project_manager'),
-        ('machine_mantainer', 'Machine_mantainer'),
-    ]
-    category = models.CharField(
+    
+    user_type = models.CharField(
         max_length=20,
-        choices=CATEGORY_CHOICES,
-        null=True,
-        blank=True
+        choices=UserType.choices,
     )
-    FREQUENCY_CHOICES = [
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly'),
-        ('yearly', 'Yearly'),
-        ('quarterly', 'Quarterly'),
-    ]
+
     frequency = models.CharField(
-        max_length=10,
-        choices=FREQUENCY_CHOICES
+        max_length=20,
+        choices=FrequencyType.choices,
     )
-    # Pages will be a reverse relation from ReportTemplatePage
 
     def __str__(self):
         return self.name
@@ -73,7 +73,6 @@ class ReportTemplatePage(models.Model):
         max_length=10,
         choices=LAYOUT_CHOICES
     )
-    # Elements will be a reverse relation from KpiReportElement
 
     def __str__(self):
         return f"{self.report_template.name} - {self.get_layout_display()}"
@@ -98,41 +97,19 @@ class KpiReportElement(models.Model):
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
 
-class User(models.Model):
-    CATEGORY_CHOICES = [
-        ('doctor', 'Doctor'),
-        ('parent', 'Parent'),
-        ('project_manager', 'Project_manager'),
-        ('machine_mantainer', 'Machine_mantainer'),
-    ]
-    category = models.CharField(
-        max_length=20,
-        choices=CATEGORY_CHOICES,
-        null=True,
-        blank=True
-    )
-    email = models.EmailField()
-    token = models.CharField(
-        max_length=10,
-        null=True,
-        blank=True
-    )
-
-    def __str__(self):
-        return self.name
 
 class Alarm(models.Model):
+    
+    user_type = models.CharField(
+        max_length=20,
+        choices=UserType.choices,
+    )
+    
     kpi = models.ForeignKey(
         Kpi,
         on_delete=models.CASCADE
-
     )
-    user = models.ForeignKey(
-        User,
-        related_name='alarms',
 
-        on_delete=models.CASCADE
-    )
     min_value = models.FloatField()
     max_value = models.FloatField()
 
