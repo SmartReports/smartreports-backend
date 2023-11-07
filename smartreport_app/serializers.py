@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate
+from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,3 +38,9 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
                 KpiReportElement.objects.create(report_page=report_page, **element_data)
         
         return report_template
+
+
+class KpiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Kpi
+        fields = '__all__'  # You can also specify the fields explicitly: fields = ['name']

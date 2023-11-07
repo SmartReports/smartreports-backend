@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'report-templates', views.ReportTemplateViewSet)
 router.register(r'report-template-pages', views.ReportTemplatePageViewSet)
 router.register(r'kpi-report-elements', views.KpiReportElementViewSet)
+router.register(r'kpi-list', views.KpiViewSet )
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
