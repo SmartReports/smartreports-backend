@@ -124,14 +124,14 @@ class User(models.Model):
 class Alarm(models.Model):
     kpi = models.ForeignKey(
         Kpi,
-        on_delete=models.CASCADE,
-        null=True
+        on_delete=models.CASCADE
+
     )
     user = models.ForeignKey(
         User,
         related_name='alarms',
-        on_delete=models.CASCADE, 
-        null=True
+
+        on_delete=models.CASCADE
     )
     min_value = models.FloatField()
     max_value = models.FloatField()
