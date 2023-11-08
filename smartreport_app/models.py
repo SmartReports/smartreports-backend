@@ -6,20 +6,42 @@ from django.utils.translation import gettext_lazy as _
 #     created = models.DateTimeField(auto_now_add=True)
 #     file = models.FileField(upload_to="reports/")
 
+class UserType(models.TextChoices):
+    DOCTOR = 'doctor', _('Doctor')
+    PARENT = 'parent', _('Parent')
+    PROJECT_MANAGER = 'project_manager', _('Project Manager')
+    MACHINE_MAINTAINER = 'machine_maintainer', _('Machine Maintainer')
+
 
 class Kpi(models.Model):
-    # Assuming you have a Kpi model with at least a name field.
+  
     name = models.CharField(max_length=255)
+
+    priorityDoctor = models.IntegerField(default=0)
+    priorityParent = models.IntegerField(default=0)
+    priorityProjectManager = models.IntegerField(default=0)
+    priorityMachineMaintainer = models.IntegerField(default=0)
+    isNew = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
 
-class ChartType(models.TextChoices):
-    LINE = "line", _("Line")
-    BAR = "bar", _("Bar")
-    PIE = "pie", _("Pie")
-    SCATTER = "scatter", _("Scatter")
+class ChartType(models.Model):
+
+    kpi = models.ForeignKey(
+        Kpi, 
+        related_name="allowed_charts",
+        on_delete=models.CASCADE
+    )
+
+    CHART_CHOICES = [
+        ('line', 'Line'), 
+        ('bar', 'Bar'),
+        ('scatter', 'Scatter'),
+        ('pie', 'Pie'),
+    ]
+    plot_name = models.CharField(max_length=128, choices=CHART_CHOICES)
 
 
 class ReportTemplate(models.Model):
@@ -59,12 +81,12 @@ class KpiReportElement(models.Model):
     )
     kpi = models.ForeignKey(Kpi, on_delete=models.CASCADE)
     chart_type = models.CharField(
-        max_length=10, choices=ChartType.choices, null=True, blank=True
+        max_length=128,
     )
 
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
-
+ 
 
 class Alarm(models.Model):
     user_type = models.CharField(

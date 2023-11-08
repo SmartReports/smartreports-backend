@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm
-from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer, KpiReportElementSerializer, KpiSerializer, AlarmSerializer
+from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType
+from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer, KpiReportElementSerializer, KpiSerializer, AlarmSerializer, ChartTypeSerializer
 
 from rest_framework import viewsets
 
@@ -23,3 +23,7 @@ class KpiViewSet(viewsets.ModelViewSet):
 class AlarmViewSet(viewsets.ModelViewSet):
     queryset = Alarm.objects.all()
     serializer_class = AlarmSerializer
+
+class ChartTypeViewSet(viewsets.ModelViewSet):
+    queryset = ChartType.objects.all()
+    serializer_class = ChartTypeSerializer
