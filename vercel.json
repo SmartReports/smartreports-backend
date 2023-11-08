@@ -2,7 +2,7 @@
     "builds": [{
         "src": "smartreport/wsgi.py",
         "use": "@natanffs/vercel-python-wsgi",
-        "config": { "maxLambdaSize": "25mb" },
+        "config": { "maxLambdaSize": "25mb" }
     }],
     "routes": [
         {
