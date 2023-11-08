@@ -48,7 +48,6 @@ class ReportTemplatePage(models.Model):
         ("grid", "Grid"),
     ]
     layout = models.CharField(max_length=10, choices=LAYOUT_CHOICES)
-    # Elements will be a reverse relation from KpiReportElement
 
     def __str__(self):
         return f"{self.report_template.name} - {self.get_layout_display()}"
@@ -65,3 +64,18 @@ class KpiReportElement(models.Model):
 
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
+
+
+class Alarm(models.Model):
+    user_type = models.CharField(
+        max_length=20,
+        choices=UserType.choices,
+    )
+
+    kpi = models.ForeignKey(Kpi, on_delete=models.CASCADE)
+
+    min_value = models.FloatField()
+    max_value = models.FloatField()
+
+    def __str__(self):
+        return self.name
