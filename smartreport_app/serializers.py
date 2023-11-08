@@ -47,7 +47,7 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
 class ChartTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChartType
-        fields = ["plot_name"]
+        fields = "__all__"
 
 
 class KpiSerializer(serializers.ModelSerializer):
