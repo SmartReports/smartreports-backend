@@ -3,7 +3,6 @@
         "src": "smartreport/wsgi.py",
         "use": "@natanffs/vercel-python-wsgi",
         "config": { "maxLambdaSize": "25mb" },
-        "runtime": "python3.9"
     }],
     "routes": [
         {
