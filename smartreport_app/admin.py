@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Kpi, ReportTemplate, ReportTemplatePage, KpiReportElement
+from .models import Kpi, ReportTemplate, ReportTemplatePage, KpiReportElement, Alarm, ChartType
 
 class KpiReportElementInline(admin.TabularInline):
     model = KpiReportElement
@@ -32,3 +32,25 @@ class ReportTemplatePageAdmin(admin.ModelAdmin):
 class KpiReportElementAdmin(admin.ModelAdmin):
     list_display = ('report_page', 'kpi', 'chart_type')
     list_filter = ('chart_type',)
+
+@admin.register(Alarm)
+class AlarmAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'kpi', 'min_value', 'max_value')
+    list_filter = ('user_type', 'kpi')
+    search_fields = ('user_type', 'kpi__name')
+
+    def get_kpi_name(self, obj):
+        return obj.kpi.name
+
+    get_kpi_name.short_description = 'KPI Name'
+
+@admin.register(ChartType)
+class ChartTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'kpi', 'plot_name')
+    list_filter = ('kpi',)
+    search_fields = ('kpi__name',)
+
+    def get_kpi_name(self, obj):
+        return obj.kpi.name
+
+    get_kpi_name.short_description = 'KPI Name'
