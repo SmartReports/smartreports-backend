@@ -1,0 +1,13 @@
+{
+    "builds": [{
+        "src": "smartreport/wsgi.py",
+        "use": "@ardnt/vercel-python-wsgi",
+        "config": { "maxLambdaSize": "25mb" }
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "smartreport/wsgi.py"
+        }
+    ]
+}
