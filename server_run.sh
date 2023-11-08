@@ -1,6 +1,6 @@
-pip install -r requirements.txt
-pip freeze > requirements.txt
-python manage.py makemigrations
-python manage.py migrate
-python manage.py migrate --run-syncdb 
-python manage.py runserver 
+pip3 install -r requirements.txt
+pip3 freeze > requirements.txt
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py migrate --run-syncdb 
+python3 manage.py runserver 
