@@ -46,6 +46,12 @@ class ChartType(models.Model):
 
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
+
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+
     FREQUENCY_CHOICES = [
         ("daily", "Daily"),
         ("weekly", "Weekly"),
@@ -90,7 +96,7 @@ class KpiReportElement(models.Model):
 
 class Alarm(models.Model):
     user_type = models.CharField(
-        max_length=20,
+        max_length=128,
         choices=UserType.choices,
     )
 
@@ -98,6 +104,17 @@ class Alarm(models.Model):
 
     min_value = models.FloatField()
     max_value = models.FloatField()
+
+    def __str__(self):
+        return self.name
+
+class DashboardLayout(models.Model):
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+
+    layout = models.CharField(max_length=2048)
 
     def __str__(self):
         return self.name

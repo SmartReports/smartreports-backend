@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType
-from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer, KpiReportElementSerializer, KpiSerializer, AlarmSerializer, ChartTypeSerializer
+from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType, DashboardLayout
+from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer, KpiReportElementSerializer, KpiSerializer, AlarmSerializer, ChartTypeSerializer, DashboardLayoutSerializer
 
 from rest_framework import viewsets
 
@@ -27,3 +27,14 @@ class AlarmViewSet(viewsets.ModelViewSet):
 class ChartTypeViewSet(viewsets.ModelViewSet):
     queryset = ChartType.objects.all()
     serializer_class = ChartTypeSerializer
+
+class DashboardLayoutViewSet(viewsets.ModelViewSet):
+    queryset = DashboardLayout.objects.all()
+    serializer_class = DashboardLayoutSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        param_value = self.request.query_params.get('user_type', None)
+        if param_value is not None:
+            queryset = queryset.filter(your_field=param_value)
+        return queryset

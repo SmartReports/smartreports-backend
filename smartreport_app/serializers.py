@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType
+from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType, DashboardLayout
 
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
@@ -66,4 +66,9 @@ class KpiSerializer(serializers.ModelSerializer):
 class AlarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alarm
+        fields = "__all__"
+
+class DashboardLayoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DashboardLayout
         fields = "__all__"
