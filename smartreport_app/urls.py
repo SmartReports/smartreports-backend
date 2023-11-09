@@ -15,5 +15,5 @@ router.register(r'dashboard-layout', views.DashboardLayoutViewSet)
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
-    path('kpi-data', views.kpi_data)
+    path('kpi-data/', views.kpi_data)
 ]

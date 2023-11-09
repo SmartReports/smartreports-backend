@@ -59,6 +59,7 @@ class KpiSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        data['id'] = str(data['id'])
         data['allowed_charts'] = [chart['plot_name'] for chart in data['allowed_charts']]
         return data
 
