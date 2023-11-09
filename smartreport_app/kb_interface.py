@@ -1,6 +1,5 @@
 
-def kb_interface(params):
-    kpi_name = params['kpi_name'],
+def kb_interface(kpi_name, params):
     plot_type = params['chart_type']
 
     # other parameters like the time period
