@@ -20,6 +20,8 @@ class KpiReportElementViewSet(viewsets.ModelViewSet):
 class KpiViewSet(viewsets.ModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 'user_type' ]    
 
 class AlarmViewSet(viewsets.ModelViewSet):
     queryset = Alarm.objects.all()
@@ -34,10 +36,5 @@ class ChartTypeViewSet(viewsets.ModelViewSet):
 class DashboardLayoutViewSet(viewsets.ModelViewSet):
     queryset = DashboardLayout.objects.all()
     serializer_class = DashboardLayoutSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        param_value = self.request.query_params.get('user_type', None)
-        if param_value is not None:
-            queryset = queryset.filter(your_field=param_value)
-        return queryset
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 'user_type' ]

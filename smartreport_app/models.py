@@ -16,11 +16,14 @@ class UserType(models.TextChoices):
 class Kpi(models.Model):
   
     name = models.CharField(max_length=255)
+    
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
 
-    priorityDoctor = models.IntegerField(default=0)
-    priorityParent = models.IntegerField(default=0)
-    priorityProjectManager = models.IntegerField(default=0)
-    priorityMachineMaintainer = models.IntegerField(default=0)
+    priority = models.IntegerField(default=0)
+
     isNew = models.BooleanField(default=True)
 
     def __str__(self):
@@ -28,6 +31,7 @@ class Kpi(models.Model):
 
 
 class ChartType(models.Model):
+    
 
     kpi = models.ForeignKey(
         Kpi, 
