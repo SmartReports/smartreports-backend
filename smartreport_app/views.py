@@ -3,6 +3,7 @@ from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, A
 from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer, KpiReportElementSerializer, KpiSerializer, AlarmSerializer, ChartTypeSerializer, DashboardLayoutSerializer
 
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 
 class ReportTemplateViewSet(viewsets.ModelViewSet):
     queryset = ReportTemplate.objects.all()
@@ -23,6 +24,8 @@ class KpiViewSet(viewsets.ModelViewSet):
 class AlarmViewSet(viewsets.ModelViewSet):
     queryset = Alarm.objects.all()
     serializer_class = AlarmSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 'user_type' ]
 
 class ChartTypeViewSet(viewsets.ModelViewSet):
     queryset = ChartType.objects.all()
