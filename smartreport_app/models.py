@@ -40,10 +40,12 @@ class ChartType(models.Model):
     )
 
     CHART_CHOICES = [
-        ('line', 'Line'), 
-        ('bar', 'Bar'),
-        ('scatter', 'Scatter'),
-        ('pie', 'Pie'),
+        ('line', 'line'), 
+        ('bar', 'bar'),
+        ('pie', 'pie'),
+        ('doughnut', 'doughnut'),
+        ('radar', 'radar')
+
     ]
     plot_name = models.CharField(max_length=128, choices=CHART_CHOICES)
 
