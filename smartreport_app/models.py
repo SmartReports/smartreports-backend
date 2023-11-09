@@ -2,9 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-# class ArchivedReport(models.Model):
-#     created = models.DateTimeField(auto_now_add=True)
-#     file = models.FileField(upload_to="reports/")
 
 class UserType(models.TextChoices):
     DOCTOR = 'doctor', _('Doctor')
@@ -124,3 +121,11 @@ class DashboardLayout(models.Model):
 
     def __str__(self):
         return self.name
+
+class ArchivedReport(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    template = models.ForeignKey(
+        ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE)
+
+    file = models.FileField(upload_to="reports/")

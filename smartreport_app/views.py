@@ -73,9 +73,10 @@ def kpi_data(request, format=None):
     params = request.query_params
 
     # check if the parameters "kpi_name" and "user_type" are provided
-    if not 'kpi_name' in params or not 'user_type' in params or not 'chart_type' in params:
+    if not 'kpi_id' in params or not 'user_type' in params or not 'chart_type' in params:
         return Response({"message": "The required parameters 'kpi_name' and 'user_type' are missing"}, status=status.HTTP_400_BAD_REQUEST)
 
+    kpi_name = Kpi.objects.get(pk=params['kpi_id']).name
 
     if False: # enable in production
         # check if the required kpi exists
@@ -95,6 +96,6 @@ def kpi_data(request, format=None):
 
     # ask the kb for the response, the format is different depending on the kind of plot
 
-    data = kb_interface(params)
+    data = kb_interface(kpi_name, params)
 
     return Response({'data' : data})
