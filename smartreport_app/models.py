@@ -117,7 +117,7 @@ class DashboardLayout(models.Model):
         choices=UserType.choices,
     )
 
-    layout = models.CharField(max_length=2048)
+    layout = models.JSONField()
 
     def __str__(self):
         return self.name
