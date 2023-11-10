@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "smartreport_app",
     "corsheaders",
     'django_filters',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -139,10 +140,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
+    # UNCOMMENT THIS TO ENABLE PERMISSIONS CHECKS
+    # 
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'smartreport_app.permissions.FullObjectPermission',
+    # ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
