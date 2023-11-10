@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ubuntu 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_GITHUB_TOKEN }}
+        with:
+          source-directory: '.'
+          destination-github-username: 'PaulMagos'
+          destination-repository-name: 'smartreports-backend'
+          user-email: paulmagos@icloud.com
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: main
