@@ -153,10 +153,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
-if (os.environ.get("DEBUG").lower() == "false"):
-    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
-        'smartreport_app.permissions.FullObjectPermission',
-    )
+# if (os.environ.get("DEBUG").lower() == "false"):
+#     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+#         'smartreport_app.permissions.FullObjectPermission',
+#     )
 
 
 # Internationalization
