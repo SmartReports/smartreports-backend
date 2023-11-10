@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "smartreport_app.apps.SmartreportAppConfig",
+    "smartreport_app",
     "corsheaders",
     'django_filters',
 ]
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "smartreport.wsgi.app"
+WSGI_APPLICATION = "smartreport.wsgi.application"
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
@@ -100,22 +100,25 @@ if DEBUG:
         }
     }
 else:
-    DATABASES = {
+    # If no environ variables exists -> 
+    if not os.environ.get("POSTGRES_DATABASE"):
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
+        }
+    else :
+        DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DATABASE"),  # database name  
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": os.environ.get("POSTGRES_HOST"),
+            "PORT": os.environ.get("POSTGRES_PORT"),
         }
     }
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql",
-    #         "NAME": "verceldb",  # database name
-    #         "USER": "default",
-    #         "PASSWORD": "FaDflmKI2P3W",
-    #         "HOST": "ep-tiny-butterfly-10712856-pooler.eu-central-1.postgres.vercel-storage.com",
-    #         "PORT": "5432",
-    #     }
-    # }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -158,12 +161,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = './smartreport/static'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
