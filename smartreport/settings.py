@@ -10,20 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+from os.path import join as join, dirname
 from pathlib import Path
+from dotenv import load_dotenv
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+os.environ.setdefault('DEBUG', "True")
+os.environ.setdefault('SECRET_KEY', "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "smartreport_app",
     "corsheaders",
     'django_filters',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ CORS_ALLOWED_ORIGINS = [
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if DEBUG:
+if os.environ.get("DEBUG").lower() == "true":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -139,12 +140,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+# if (os.environ.get("DEBUG").lower() == "false"):
+#     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+#         'smartreport_app.permissions.FullObjectPermission',
+#     )
 
 
 # Internationalization

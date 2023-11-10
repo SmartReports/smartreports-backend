@@ -4,65 +4,49 @@ from .serializers import ReportTemplatePageSerializer, ReportTemplateSerializer,
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
+
 from .kb_interface import kb_interface
 
+
+
 class ReportTemplateViewSet(viewsets.ModelViewSet):
+
     queryset = ReportTemplate.objects.all()
     serializer_class = ReportTemplateSerializer
 
 class ReportTemplatePageViewSet(viewsets.ModelViewSet):
+
     queryset = ReportTemplatePage.objects.all()
     serializer_class = ReportTemplatePageSerializer
-    
-    def create(self, request, *args, **kwargs):
-        return Response({"message": "POST method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class KpiReportElementViewSet(viewsets.ModelViewSet):
+
     queryset = KpiReportElement.objects.all()
     serializer_class = KpiReportElementSerializer
-    
-    def create(self, request, *args, **kwargs):
-        return Response({"message": "POST method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def update(self, request, *args, **kwargs):
-        return Response({"message": "PUT method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-class KpiViewSet(viewsets.ModelViewSet):
+class KpiViewSet(viewsets.ReadOnlyModelViewSet):
+    
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = [ 'user_type' , 'name' ]    
-    
-    def create(self, request, *args, **kwargs):
-        return Response({"message": "POST method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def update(self, request, *args, **kwargs):
-        return Response({"message": "PUT method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    filterset_fields = [ 'user_type' , 'name' ]
 
 class AlarmViewSet(viewsets.ModelViewSet):
+
     queryset = Alarm.objects.all()
     serializer_class = AlarmSerializer
-    filter_backends = [DjangoFilterBackend]
     filterset_fields = [ 'user_type' ]
 
-class ChartTypeViewSet(viewsets.ModelViewSet):
+class ChartTypeViewSet(viewsets.ReadOnlyModelViewSet):
+
     queryset = ChartType.objects.all()
     serializer_class = ChartTypeSerializer
     
-    def create(self, request, *args, **kwargs):
-        return Response({"message": "POST method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def update(self, request, *args, **kwargs):
-        return Response({"message": "PUT method is not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 class DashboardLayoutViewSet(viewsets.ModelViewSet):
+
     queryset = DashboardLayout.objects.all()
     serializer_class = DashboardLayoutSerializer
-    filter_backends = [DjangoFilterBackend]
     filterset_fields = [ 'user_type' ]
-
 
 @api_view(['GET'])
 def kpi_data(request, format=None):
