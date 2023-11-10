@@ -150,13 +150,13 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    # UNCOMMENT THIS TO ENABLE PERMISSIONS CHECKS
-    # 
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'smartreport_app.permissions.FullObjectPermission',
-    # ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+if (os.environ.get("DEBUG").lower() == "false"):
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+        'smartreport_app.permissions.FullObjectPermission',
+    )
 
 
 # Internationalization
