@@ -26,7 +26,7 @@ from .kb_interface import kb_interface
 class ReportTemplateViewSet(viewsets.ModelViewSet):
     queryset = ReportTemplate.objects.all()
     serializer_class = ReportTemplateSerializer
-
+    filterset_fields = ["user_type"]
 
 class ReportTemplatePageViewSet(viewsets.ModelViewSet):
     queryset = ReportTemplatePage.objects.all()
