@@ -15,7 +15,8 @@ CHART_CHOICES = (
     "line",
     "bar",
     "pie",
-    "scatter",
+    "doughnut",
+    "radar",
 )
 
 
