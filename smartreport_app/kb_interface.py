@@ -7,7 +7,6 @@ def kb_interface(kpi_name, params):
     if plot_type == 'line':
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'data' : {
             'datasets': [{
                 'label': 'massa di filippo',
                 'data': [65, 59, 50, 40, 30, 20, 10],
@@ -15,7 +14,6 @@ def kb_interface(kpi_name, params):
                 'borderColor': 'rgb(75, 192, 192)',
                 'tension': 0.1
                 }]
-            }
         }
 
         return response
