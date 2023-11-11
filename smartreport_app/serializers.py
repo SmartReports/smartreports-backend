@@ -1,11 +1,18 @@
 from rest_framework import serializers
-from .models import KpiReportElement, ReportTemplatePage, ReportTemplate, Kpi, Alarm, ChartType, DashboardLayout
+from .models import (
+    KpiReportElement,
+    ReportTemplatePage,
+    ReportTemplate,
+    Kpi,
+    Alarm,
+    DashboardLayout,
+)
 
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = KpiReportElement
-        fields = "__all__"
+        fields = ["id", "kpi", "chart_type"]
 
 
 class ReportTemplatePageSerializer(serializers.ModelSerializer):
@@ -13,7 +20,7 @@ class ReportTemplatePageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReportTemplatePage
-        fields = "__all__"
+        fields = ["elements", "id", "layout"]
 
 
 class ReportTemplateSerializer(serializers.ModelSerializer):
@@ -43,24 +50,16 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
                 KpiReportElement.objects.create(report_page=report_page, **element_data)
 
         return report_template
-    
-class ChartTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChartType
-        fields = "__all__"
 
 
 class KpiSerializer(serializers.ModelSerializer):
-    allowed_charts = ChartTypeSerializer(many=True, required=False)
-    
     class Meta:
         model = Kpi
         fields = "__all__"
-    
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['id'] = str(data['id'])
-        data['allowed_charts'] = [chart['plot_name'] for chart in data['allowed_charts']]
+        data["id"] = str(data["id"])
         return data
 
 
@@ -68,6 +67,7 @@ class AlarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alarm
         fields = "__all__"
+
 
 class DashboardLayoutSerializer(serializers.ModelSerializer):
     class Meta:
