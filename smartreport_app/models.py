@@ -2,18 +2,16 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-
 class UserType(models.TextChoices):
-    DOCTOR = 'doctor', _('Doctor')
-    PARENT = 'parent', _('Parent')
-    PROJECT_MANAGER = 'project_manager', _('Project Manager')
-    MACHINE_MAINTAINER = 'machine_maintainer', _('Machine Maintainer')
+    DOCTOR = "doctor", _("Doctor")
+    PARENT = "parent", _("Parent")
+    PROJECT_MANAGER = "project_manager", _("Project Manager")
+    MACHINE_MAINTAINER = "machine_maintainer", _("Machine Maintainer")
 
 
 class Kpi(models.Model):
-  
     name = models.CharField(max_length=255)
-    
+
     user_type = models.CharField(
         max_length=128,
         choices=UserType.choices,
@@ -28,21 +26,16 @@ class Kpi(models.Model):
 
 
 class ChartType(models.Model):
-    
-
     kpi = models.ForeignKey(
-        Kpi, 
-        related_name="allowed_charts",
-        on_delete=models.CASCADE
+        Kpi, related_name="allowed_charts", on_delete=models.CASCADE
     )
 
     CHART_CHOICES = [
-        ('line', 'line'), 
-        ('bar', 'bar'),
-        ('pie', 'pie'),
-        ('doughnut', 'doughnut'),
-        ('radar', 'radar')
-
+        ("line", "line"),
+        ("bar", "bar"),
+        ("pie", "pie"),
+        ("doughnut", "doughnut"),
+        ("radar", "radar"),
     ]
     plot_name = models.CharField(max_length=128, choices=CHART_CHOICES)
 
@@ -95,7 +88,7 @@ class KpiReportElement(models.Model):
 
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
- 
+
 
 class Alarm(models.Model):
     user_type = models.CharField(
@@ -111,6 +104,7 @@ class Alarm(models.Model):
     def __str__(self):
         return self.name
 
+
 class DashboardLayout(models.Model):
     user_type = models.CharField(
         max_length=128,
@@ -122,10 +116,12 @@ class DashboardLayout(models.Model):
     def __str__(self):
         return self.name
 
+
 class ArchivedReport(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     template = models.ForeignKey(
-        ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE)
+        ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
+    )
 
     file = models.FileField(upload_to="reports/")
