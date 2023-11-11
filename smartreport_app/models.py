@@ -114,9 +114,6 @@ class Alarm(models.Model):
     min_value = models.FloatField()
     max_value = models.FloatField()
 
-    def __str__(self):
-        return self.name
-
 
 class DashboardLayout(models.Model):
     user_type = models.CharField(
@@ -125,9 +122,6 @@ class DashboardLayout(models.Model):
     )
 
     layout = models.JSONField()
-
-    def __str__(self):
-        return self.name
 
 
 class ArchivedReport(models.Model):

@@ -25,6 +25,7 @@ os.environ.setdefault(
     "SECRET_KEY", "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj"
 )
 
+DEBUG = os.environ.get("DEBUG").lower() == "true"
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = [

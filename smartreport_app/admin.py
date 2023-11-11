@@ -5,6 +5,7 @@ from .models import (
     ReportTemplatePage,
     KpiReportElement,
     Alarm,
+    DashboardLayout
 )
 
 
@@ -56,3 +57,9 @@ class AlarmAdmin(admin.ModelAdmin):
         return obj.kpi.name
 
     get_kpi_name.short_description = "KPI Name"
+
+@admin.register(DashboardLayout)
+class DashboardLayoutAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'layout')  # Fields to display in the list view
+    list_filter = ("user_type", )
+    search_fields = ('user_type',)  # Fields to enable searching in the admin interface
