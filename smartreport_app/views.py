@@ -18,6 +18,7 @@ from .serializers import (
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 
 from .kb_interface import kb_interface
@@ -56,6 +57,7 @@ class DashboardLayoutViewSet(viewsets.ModelViewSet):
     filterset_fields = ["user_type"]
 
 class KpiDataViewSet(viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
     def list(self, request):
         print(type(Kpi.objects.all().get(pk=1)))
         return Response({"message": "This endpoint is not available"})
