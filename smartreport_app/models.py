@@ -1,23 +1,37 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django.core.exceptions import ValidationError
 
 
 class UserType(models.TextChoices):
-    DOCTOR = 'doctor', _('Doctor')
-    PARENT = 'parent', _('Parent')
-    PROJECT_MANAGER = 'project_manager', _('Project Manager')
-    MACHINE_MAINTAINER = 'machine_maintainer', _('Machine Maintainer')
+    DOCTOR = "doctor", _("Doctor")
+    PARENT = "parent", _("Parent")
+    PROJECT_MANAGER = "project_manager", _("Project Manager")
+    MACHINE_MAINTAINER = "machine_maintainer", _("Machine Maintainer")
+
+
+CHART_CHOICES = (
+    "line",
+    "bar",
+    "pie",
+    "scatter",
+)
+
+
+def DEFAULT_CHART_CHOICES():
+    return [*CHART_CHOICES]
 
 
 class Kpi(models.Model):
-  
     name = models.CharField(max_length=255)
-    
+
     user_type = models.CharField(
         max_length=128,
         choices=UserType.choices,
     )
+
+    allowed_charts = models.JSONField(default=DEFAULT_CHART_CHOICES)
 
     priority = models.IntegerField(default=0)
 
@@ -26,25 +40,16 @@ class Kpi(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
-class ChartType(models.Model):
-    
-
-    kpi = models.ForeignKey(
-        Kpi, 
-        related_name="allowed_charts",
-        on_delete=models.CASCADE
-    )
-
-    CHART_CHOICES = [
-        ('line', 'line'), 
-        ('bar', 'bar'),
-        ('pie', 'pie'),
-        ('doughnut', 'doughnut'),
-        ('radar', 'radar')
-
-    ]
-    plot_name = models.CharField(max_length=128, choices=CHART_CHOICES)
+    def clean(self):
+        if not isinstance(self.allowed_charts, list):
+            raise ValidationError("Allowed charts must be a list")
+        for chart in self.allowed_charts:
+            if chart not in CHART_CHOICES:
+                raise ValidationError(f"{chart} is not a valid chart type")
 
 
 class ReportTemplate(models.Model):
@@ -95,7 +100,7 @@ class KpiReportElement(models.Model):
 
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
- 
+
 
 class Alarm(models.Model):
     user_type = models.CharField(
@@ -111,6 +116,7 @@ class Alarm(models.Model):
     def __str__(self):
         return self.name
 
+
 class DashboardLayout(models.Model):
     user_type = models.CharField(
         max_length=128,
@@ -122,10 +128,12 @@ class DashboardLayout(models.Model):
     def __str__(self):
         return self.name
 
+
 class ArchivedReport(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     template = models.ForeignKey(
-        ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE)
+        ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
+    )
 
     file = models.FileField(upload_to="reports/")

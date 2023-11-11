@@ -14,16 +14,18 @@ from os.path import join as join, dirname
 from pathlib import Path
 from dotenv import load_dotenv
 
-dotenv_path = join(dirname(__file__), '.env')
+dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-os.environ.setdefault('DEBUG', "True")
-os.environ.setdefault('SECRET_KEY', "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj")
+os.environ.setdefault("DEBUG", "True")
+os.environ.setdefault(
+    "SECRET_KEY", "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj"
+)
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -46,8 +48,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "smartreport_app",
     "corsheaders",
-    'django_filters',
-    'guardian',
+    "django_filters",
+    "guardian",
 ]
 
 MIDDLEWARE = [
@@ -102,7 +104,7 @@ if os.environ.get("DEBUG").lower() == "true":
         }
     }
 else:
-    # If no environ variables exists -> 
+    # If no environ variables exists ->
     if not os.environ.get("POSTGRES_DATABASE"):
         DATABASES = {
             "default": {
@@ -110,17 +112,17 @@ else:
                 "NAME": BASE_DIR / "db.sqlite3",
             }
         }
-    else :
+    else:
         DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("POSTGRES_DATABASE"),  # database name  
-            "USER": os.environ.get("POSTGRES_USER"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": os.environ.get("POSTGRES_HOST"),
-            "PORT": os.environ.get("POSTGRES_PORT"),
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": os.environ.get("POSTGRES_DATABASE"),  # database name
+                "USER": os.environ.get("POSTGRES_USER"),
+                "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+                "HOST": os.environ.get("POSTGRES_HOST"),
+                "PORT": os.environ.get("POSTGRES_PORT"),
+            }
         }
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -141,8 +143,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
 ]
 
 REST_FRAMEWORK = {
@@ -150,7 +152,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 # if (os.environ.get("DEBUG").lower() == "false"):
@@ -174,9 +176,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+DEBUG = True
