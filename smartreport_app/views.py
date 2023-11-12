@@ -1,3 +1,5 @@
+import os
+from typing import Any
 from django.shortcuts import render
 from .models import (
     KpiReportElement,
@@ -57,7 +59,11 @@ class DashboardLayoutViewSet(viewsets.ModelViewSet):
     filterset_fields = ["user_type"]
 
 class KpiDataViewSet(viewsets.GenericViewSet):
-    permission_classes = [IsAuthenticated]
+    def __init__(self, **kwargs: Any) -> None:
+        if (os.environ.get("DEBUG").lower() == "false"):
+            self.permission_classes = [IsAuthenticated]
+        super().__init__(**kwargs)
+
     def list(self, request):
         print(type(Kpi.objects.all().get(pk=1)))
         return Response({"message": "This endpoint is not available"})
