@@ -120,6 +120,16 @@ class DashboardLayout(models.Model):
         max_length=128,
         choices=UserType.choices,
     )
+    
+    DISPLAY_CHOICES = [
+        ("xxs", "xxs"),
+        ("xs", "xs"),
+        ("sm", "sm"),
+        ("md", "md"),
+        ("lg", "lg"),
+    ]
+    
+    display = models.CharField(max_length=10, choices=DISPLAY_CHOICES)
 
     layout = models.JSONField()
 

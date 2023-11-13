@@ -8,7 +8,7 @@ def kb_interface(kpi_name, params):
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets': [{
-                'label': 'massa di filippo',
+                'label': 'Productivity',
                 'data': [65, 59, 50, 40, 30, 20, 10],
                 'fill': False,
                 'borderColor': 'rgb(75, 192, 192)',
@@ -20,7 +20,7 @@ def kb_interface(kpi_name, params):
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets': [{
-                'label': 'lunghezza del pene di paul',
+                'label': 'Efficiency',
                 'data': [20, 33, 45, 1, 34, 55, 40],
                 'backgroundColor': [
                     'rgba(255, 99, 132, 0.2)',
@@ -47,7 +47,7 @@ def kb_interface(kpi_name, params):
     elif plot_type == 'scatter':
         response = {
             'datasets': [{
-                'label': 'produzione di cagasburra',
+                'label': 'Machine failure',
                 'data': [{'x': -10,'y': 0 }, 
                          {'x': 0,  'y': 10}, 
                          {'x': 10, 'y': 5 }, 
@@ -61,9 +61,9 @@ def kb_interface(kpi_name, params):
     
     elif plot_type == 'pie' or plot_type == 'doughnut':
         response = {
-            'labels': ['pene', 'muscoli'],
+            'labels': ['Good', 'bad'],
             'datasets': [{
-                'label': 'composizione del corpo di paul',
+                'label': 'Power Consumption',
                 'data': [330, 60],
                 'backgroundColor': [
                     'rgba(255, 99, 132, 0.2)',
@@ -85,7 +85,7 @@ def kb_interface(kpi_name, params):
                 'Running'
             ],
             'datasets': [{
-                'label': 'ragnatela della mamma di filippo',
+                'label': 'yesterday',
                 'data': [65, 59, 90, 81, 56, 55, 40],
                 'fill': True,
                 'backgroundColor': 'rgba(255, 99, 132, 0.2)',
@@ -95,7 +95,7 @@ def kb_interface(kpi_name, params):
                 'pointHoverBackgroundColor': '#fff',
                 'pointHoverBorderColor': 'rgb(255, 99, 132)'
             }, {
-                'label': 'ragnatela della mamma di paul',
+                'label': 'today',
                 'data': [28, 48, 40, 19, 96, 27, 100],
                 'fill': True,
                 'backgroundColor': 'rgba(54, 162, 235, 0.2)',
