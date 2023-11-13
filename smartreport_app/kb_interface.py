@@ -61,7 +61,7 @@ def kb_interface(kpi_name, params):
     
     elif plot_type == 'pie' or plot_type == 'doughnut':
         response = {
-            'labels': ['Good', 'bad'],
+            'labels': ['Good', 'Bad'],
             'datasets': [{
                 'label': f'{kpi_name}',
                 'data': [330, 60],
@@ -85,7 +85,7 @@ def kb_interface(kpi_name, params):
                 'Running'
             ],
             'datasets': [{
-                'label': 'yesterday',
+                'label': 'Yesterday',
                 'data': [65, 59, 90, 81, 56, 55, 40],
                 'fill': True,
                 'backgroundColor': 'rgba(255, 99, 132, 0.2)',
@@ -95,7 +95,7 @@ def kb_interface(kpi_name, params):
                 'pointHoverBackgroundColor': '#fff',
                 'pointHoverBorderColor': 'rgb(255, 99, 132)'
             }, {
-                'label': 'today',
+                'label': 'Today',
                 'data': [28, 48, 40, 19, 96, 27, 100],
                 'fill': True,
                 'backgroundColor': 'rgba(54, 162, 235, 0.2)',
