@@ -16,8 +16,6 @@ def kb_interface(kpi_name, params):
                 }]
         }
 
-        return response
-
     elif plot_type == 'bar':
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -45,7 +43,6 @@ def kb_interface(kpi_name, params):
                 'borderWidth': 1
             }]
         }
-        return response
 
     elif plot_type == 'scatter':
         response = {
@@ -61,8 +58,6 @@ def kb_interface(kpi_name, params):
                 'backgroundColor': 'rgb(255, 99, 132)'
             }],
         }
-
-        return response
     
     elif plot_type == 'pie' or plot_type == 'doughnut':
         response = {
@@ -77,8 +72,6 @@ def kb_interface(kpi_name, params):
             'hoverOffset': 4
             }]
         }
-
-        return response
 
     elif plot_type == 'radar':
         response = {
@@ -114,4 +107,15 @@ def kb_interface(kpi_name, params):
             }]
         }
 
-        return response
+    elif plot_type == 'scatter':
+        response = {
+            'datasets': [{
+                'label': 'Scatter Dataset',
+                'data': [{'x': -10,'y': 0}, {'x': 0,'y': 10 }, {'x': 10,'y': 5},{'x': 0.5, 'y': 5.5
+                }],
+                'backgroundColor': 'rgb(255, 99, 132)'
+            }],
+        }
+        
+
+    return response
