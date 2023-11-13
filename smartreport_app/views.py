@@ -56,7 +56,7 @@ class AlarmViewSet(viewsets.ModelViewSet):
 class DashboardLayoutViewSet(viewsets.ModelViewSet):
     queryset = DashboardLayout.objects.all()
     serializer_class = DashboardLayoutSerializer
-    filterset_fields = ["user_type"]
+    filterset_fields = ["user_type", "display"]
 
 class KpiDataViewSet(viewsets.GenericViewSet):
     def __init__(self, **kwargs: Any) -> None:
