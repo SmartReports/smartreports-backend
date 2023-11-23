@@ -137,8 +137,28 @@ class DashboardLayout(models.Model):
 class ArchivedReport(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
+    sent = models.BooleanField(default=False)
+
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+
     template = models.ForeignKey(
         ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
     )
 
     file = models.FileField(upload_to="reports/")
+
+
+class Email(models.Model):
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+
+    emails = models.JSONField()
+
+    def clean(self):
+        if not isinstance(self.emails, list):
+            raise ValidationError("Emails must be a list")
