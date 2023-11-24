@@ -44,7 +44,7 @@ class ReportTemplatePageAdmin(admin.ModelAdmin):
 
 @admin.register(KpiReportElement)
 class KpiReportElementAdmin(admin.ModelAdmin):
-    list_display = ("report_page", "kpis", "chart_type")
+    list_display = ("report_page", "chart_type")
     list_filter = ("chart_type",)
 
 
