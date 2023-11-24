@@ -6,13 +6,14 @@ from .models import (
     Kpi,
     Alarm,
     DashboardLayout,
+    ArchivedReport,
 )
 
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = KpiReportElement
-        fields = ["id", "kpi", "chart_type"]
+        fields = ["id", "kpi1", "chart_type"]
 
 
 class ReportTemplatePageSerializer(serializers.ModelSerializer):
@@ -22,7 +23,7 @@ class ReportTemplatePageSerializer(serializers.ModelSerializer):
         model = ReportTemplatePage
         fields = ["elements", "id", "layout"]
 
-
+# TODO FIX
 class ReportTemplateSerializer(serializers.ModelSerializer):
     pages = ReportTemplatePageSerializer(many=True)
 
@@ -73,3 +74,9 @@ class DashboardLayoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = DashboardLayout
         fields = "__all__"
+
+class ArchivedReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArchivedReport
+        fields = "__all__"
+
