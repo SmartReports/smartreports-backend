@@ -31,7 +31,7 @@ def DEFAULT_USER_CHOICES():
     return [*USER_CHOICES]
 
 
-# TODO CHECK
+
 class Kpi(models.Model):
 
     # field from the kb
@@ -54,7 +54,7 @@ class Kpi(models.Model):
     isNew = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.kb_name
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -122,6 +122,8 @@ class KpiReportElement(models.Model):
         ReportTemplatePage, related_name="elements", on_delete=models.CASCADE
     )
 
+    # many to many
+
     chart_type = models.CharField(
         max_length=128,
     )
@@ -129,7 +131,7 @@ class KpiReportElement(models.Model):
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
 
-# TODO CHECK
+
 class KpiReportElementKpi(models.Model):
     kpi = models.ForeignKey(Kpi, on_delete=models.CASCADE, related_name='appears_in')
     kpiReportElement = models.ForeignKey(KpiReportElement, on_delete=models.CASCADE, related_name='kpis')

@@ -50,7 +50,7 @@ class KpiReportElementViewSet(viewsets.ModelViewSet):
     queryset = KpiReportElement.objects.all()
     serializer_class = KpiReportElementSerializer
 
-# TODO CHECK
+
 class KpiFilter(django_filters.FilterSet):
     user_type = django_filters.CharFilter(method='filter_user_type')
 
@@ -62,25 +62,27 @@ class KpiFilter(django_filters.FilterSet):
         # Access the value from the GET query parameters
         user_type_value = self.request.query_params.get('user_type')
 
+        print(user_type_value)
         # Check if the value is provided
-        if user_type_value: # TODO fix
+        if user_type_value: 
             filtered_queryset = []
             for kpi_instance in queryset:
+                print(kpi_instance.user_type)
                 if user_type_value in kpi_instance.user_type:
-                    filtered_queryset.append(kpi_instance)
-            return filtered_queryset
+                    filtered_queryset.append(kpi_instance.pk)
+            return Kpi.objects.filter(id__in=filtered_queryset)
         else:
             return queryset
     
-# TODO CHECK
+
 class KpiViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
     filterset_class = KpiFilter
 
     def list(self, request, *args, **kwargs):
-        # external function 
-        sync_kpi_lits()
+        # TODO enable this 
+        # sync_kpi_lits()
 
         return super().list(request, *args, **kwargs)
 

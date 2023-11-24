@@ -21,7 +21,6 @@ class ReportTemplatePageInline(admin.TabularInline):
     show_change_link = True
     inlines = [KpiReportElementInline]
 
-
 @admin.register(Kpi)
 class KpiAdmin(admin.ModelAdmin):
     list_display = ("kb_name",)

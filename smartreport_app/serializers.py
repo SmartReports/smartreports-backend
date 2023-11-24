@@ -28,7 +28,7 @@ class ReportTemplatePageSerializer(serializers.ModelSerializer):
         model = ReportTemplatePage
         fields = ["elements", "id", "layout"]
 
-# TODO FIX
+# TODO CHECK IF WORKS
 class ReportTemplateSerializer(serializers.ModelSerializer):
     pages = ReportTemplatePageSerializer(many=True)
 
@@ -53,7 +53,9 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
 
             # Create each KPI report element for the page.
             for element_data in elements_data:
-                KpiReportElement.objects.create(report_page=report_page, **element_data)
+                kpis = element_data.pop("kpis")
+                element = KpiReportElement.objects.create(report_page=report_page, **element_data)
+                element.kpis.set(kpis)
 
         return report_template
 
