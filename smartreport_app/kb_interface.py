@@ -1,11 +1,12 @@
 
-def kb_interface(kpi_name, params):
-    kpi_list = params['kpi_list'] # id of the kpi in the kb
+def kb_interface(params):
+    # kpi_list = params['kpi_list'] # id of the kpi in the kb
     plot_type = params['chart_type']
-    start_time = params['start_time']
-    end_time = params['end_time']
-    frequency = params['frequency']
+    # start_time = params['start_time']
+    # end_time = params['end_time']
+    # frequency = params['frequency']
 
+    kpi_name = "pippo"
 
     if plot_type == 'line':
         response = {
