@@ -9,6 +9,7 @@ router.register(r"report-template-pages", views.ReportTemplatePageViewSet)
 router.register(r"kpi-report-elements", views.KpiReportElementViewSet)
 router.register(r"kpi-list", views.KpiViewSet)
 router.register(r"alarms-list", views.AlarmViewSet)
+router.register(r"report-img", views.ReportTemplateImageViewSet)
 router.register(r"dashboard-layout", views.DashboardLayoutViewSet)
 router.register(r"kpi-data", views.KpiDataViewSet, basename="kpi-data")
 
