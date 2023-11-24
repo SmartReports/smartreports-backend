@@ -82,7 +82,7 @@ class KpiViewSet(viewsets.ReadOnlyModelViewSet):
 
     def list(self, request, *args, **kwargs):
 
-        sync_kpi_lits()
+        # sync_kpi_lits()
 
         return super().list(request, *args, **kwargs)
 
