@@ -21,11 +21,11 @@ class ReportTemplatePageInline(admin.TabularInline):
     show_change_link = True
     inlines = [KpiReportElementInline]
 
-
+# TODO CHECK
 @admin.register(Kpi)
 class KpiAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
+    list_display = ("kb_name",)
+    search_fields = ("kb_name",)
 
 
 @admin.register(ReportTemplate)
@@ -41,10 +41,10 @@ class ReportTemplatePageAdmin(admin.ModelAdmin):
     list_filter = ("layout",)
     inlines = [KpiReportElementInline]
 
-
+# TODO CHECK
 @admin.register(KpiReportElement)
 class KpiReportElementAdmin(admin.ModelAdmin):
-    list_display = ("report_page", "kpi", "chart_type")
+    list_display = ("report_page", "kpis", "chart_type")
     list_filter = ("chart_type",)
 
 

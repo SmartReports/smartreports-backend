@@ -1,6 +1,8 @@
 import os
 from typing import Any
-from django.shortcuts import render
+import django_filters
+from .sync_db_kb import sync_kpi_lits
+
 from .models import (
     KpiReportElement,
     ReportTemplatePage,
@@ -9,6 +11,7 @@ from .models import (
     Kpi,
     Alarm,
     DashboardLayout,
+    ArchivedReport,
 )
 from .serializers import (
     ReportTemplatePageSerializer,
@@ -18,6 +21,7 @@ from .serializers import (
     KpiSerializer,
     AlarmSerializer,
     DashboardLayoutSerializer,
+    ArchivedReportSerializer,
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -46,11 +50,39 @@ class KpiReportElementViewSet(viewsets.ModelViewSet):
     queryset = KpiReportElement.objects.all()
     serializer_class = KpiReportElementSerializer
 
+# TODO CHECK
+class KpiFilter(django_filters.FilterSet):
+    user_type = django_filters.CharFilter(method='filter_user_type')
 
+    class Meta:
+        model = Kpi
+        fields = ['user_type']
+
+    def filter_user_type(self, queryset, name, value):
+        # Access the value from the GET query parameters
+        user_type_value = self.request.query_params.get('user_type')
+
+        # Check if the value is provided
+        if user_type_value: # TODO fix
+            filtered_queryset = []
+            for kpi_instance in queryset:
+                if user_type_value in kpi_instance.user_type:
+                    filtered_queryset.append(kpi_instance)
+            return filtered_queryset
+        else:
+            return queryset
+    
+# TODO CHECK
 class KpiViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
-    filterset_fields = ["user_type", "name"]
+    filterset_class = KpiFilter
+
+    def list(self, request, *args, **kwargs):
+        # external function 
+        sync_kpi_lits()
+
+        return super().list(request, *args, **kwargs)
 
 
 class AlarmViewSet(viewsets.ModelViewSet):
@@ -105,3 +137,9 @@ class KpiDataViewSet(viewsets.GenericViewSet):
                 )
         data = kb_interface(kpi_name, params)
         return Response({"data": data})
+
+
+class ArchiveViewSet(viewsets.ModelViewSet):
+    queryset = ArchivedReport.objects.all()
+    serializer_class = ArchivedReportSerializer
+    filterset_fields = ["user_type"]

@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "smartreport"
-    ]
+    ],
+    "editor.inlineSuggest.showToolbar": "always"
 }
