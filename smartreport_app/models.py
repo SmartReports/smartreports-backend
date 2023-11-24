@@ -88,6 +88,12 @@ class ReportTemplate(models.Model):
         choices=UserType.choices,
     )
 
+    read_only = models.BooleanField(
+        default=False, 
+        auto_created=True,
+        editable=False,
+    )
+
     FREQUENCY_CHOICES = [
         ("daily", "Daily"),
         ("weekly", "Weekly"),

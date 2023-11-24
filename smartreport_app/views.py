@@ -33,7 +33,7 @@ from .kb_interface import kb_interface
 
 
 class ReportTemplateViewSet(viewsets.ModelViewSet):
-    queryset = ReportTemplate.objects.all()
+    queryset = ReportTemplate.objects.filter(read_only=False)
     serializer_class = ReportTemplateSerializer
     filterset_fields = ["user_type"]
 
@@ -139,4 +139,9 @@ class KpiDataViewSet(viewsets.GenericViewSet):
 class ArchiveViewSet(viewsets.ModelViewSet):
     queryset = ArchivedReport.objects.all()
     serializer_class = ArchivedReportSerializer
+    filterset_fields = ["user_type"]
+
+class SmartTemplateViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ReportTemplate.objects.filter(read_only=True)
+    serializer_class = ReportTemplateSerializer
     filterset_fields = ["user_type"]

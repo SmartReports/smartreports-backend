@@ -30,8 +30,8 @@ class KpiAdmin(admin.ModelAdmin):
 
 @admin.register(ReportTemplate)
 class ReportTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "frequency")
-    list_filter = ("frequency",)
+    list_display = ("id", "name", "frequency", "read_only")
+    list_filter = ("frequency", "read_only")
     inlines = [ReportTemplatePageInline]
 
 
