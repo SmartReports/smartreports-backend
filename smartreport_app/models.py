@@ -94,7 +94,13 @@ class ReportTemplate(models.Model):
 
     def __str__(self):
         return self.name
-
+class ReportTemplateImage(models.Model):
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+    report_id = models.ForeignKey(ReportTemplate, on_delete=models.CASCADE)
+    img = models.TextField(null=True)
 
 class ReportTemplatePage(models.Model):
     report_template = models.ForeignKey(

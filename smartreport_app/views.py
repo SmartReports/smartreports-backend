@@ -7,6 +7,7 @@ from .models import (
     KpiReportElement,
     ReportTemplatePage,
     ReportTemplate,
+    ReportTemplateImage,
     Kpi,
     Alarm,
     DashboardLayout,
@@ -15,6 +16,7 @@ from .models import (
 from .serializers import (
     ReportTemplatePageSerializer,
     ReportTemplateSerializer,
+    ReportTemplateImageSerializer,
     KpiReportElementSerializer,
     KpiSerializer,
     AlarmSerializer,
@@ -39,6 +41,10 @@ class ReportTemplatePageViewSet(viewsets.ModelViewSet):
     queryset = ReportTemplatePage.objects.all()
     serializer_class = ReportTemplatePageSerializer
 
+class ReportTemplateImageViewSet(viewsets.ModelViewSet):
+    queryset = ReportTemplateImage.objects.all()
+    serializer_class = ReportTemplateImageSerializer
+    filterset_fields = ["user_type", "report_id"]
 
 class KpiReportElementViewSet(viewsets.ModelViewSet):
     queryset = KpiReportElement.objects.all()
