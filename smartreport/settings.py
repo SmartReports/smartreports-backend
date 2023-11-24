@@ -190,8 +190,8 @@ DEBUG = True
 DEFAULT_FROM_EMAIL = 'smartreports@example.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = 'fa29b0a6d18965'
-EMAIL_HOST_PASSWORD = '84f5260599344e'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
