@@ -1,21 +1,27 @@
 import os
 from typing import Any
-from django.shortcuts import render
+import django_filters
+from .sync_db_kb import sync_kpi_lits
+
 from .models import (
     KpiReportElement,
     ReportTemplatePage,
     ReportTemplate,
+    ReportTemplateImage,
     Kpi,
     Alarm,
     DashboardLayout,
+    ArchivedReport,
 )
 from .serializers import (
     ReportTemplatePageSerializer,
     ReportTemplateSerializer,
+    ReportTemplateImageSerializer,
     KpiReportElementSerializer,
     KpiSerializer,
     AlarmSerializer,
     DashboardLayoutSerializer,
+    ArchivedReportSerializer,
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,16 +41,50 @@ class ReportTemplatePageViewSet(viewsets.ModelViewSet):
     queryset = ReportTemplatePage.objects.all()
     serializer_class = ReportTemplatePageSerializer
 
+class ReportTemplateImageViewSet(viewsets.ModelViewSet):
+    queryset = ReportTemplateImage.objects.all()
+    serializer_class = ReportTemplateImageSerializer
+    filterset_fields = ["user_type", "report_id"]
 
 class KpiReportElementViewSet(viewsets.ModelViewSet):
     queryset = KpiReportElement.objects.all()
     serializer_class = KpiReportElementSerializer
 
 
+class KpiFilter(django_filters.FilterSet):
+    user_type = django_filters.CharFilter(method='filter_user_type')
+
+    class Meta:
+        model = Kpi
+        fields = ['user_type']
+
+    def filter_user_type(self, queryset, name, value):
+        # Access the value from the GET query parameters
+        user_type_value = self.request.query_params.get('user_type')
+
+        print(user_type_value)
+        # Check if the value is provided
+        if user_type_value: 
+            filtered_queryset = []
+            for kpi_instance in queryset:
+                print(kpi_instance.user_type)
+                if user_type_value in kpi_instance.user_type:
+                    filtered_queryset.append(kpi_instance.pk)
+            return Kpi.objects.filter(id__in=filtered_queryset)
+        else:
+            return queryset
+    
+
 class KpiViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
-    filterset_fields = ["user_type", "name"]
+    filterset_class = KpiFilter
+
+    def list(self, request, *args, **kwargs):
+        # TODO enable this 
+        # sync_kpi_lits()
+
+        return super().list(request, *args, **kwargs)
 
 
 class AlarmViewSet(viewsets.ModelViewSet):
@@ -56,7 +96,7 @@ class AlarmViewSet(viewsets.ModelViewSet):
 class DashboardLayoutViewSet(viewsets.ModelViewSet):
     queryset = DashboardLayout.objects.all()
     serializer_class = DashboardLayoutSerializer
-    filterset_fields = ["user_type"]
+    filterset_fields = ["user_type", "display"]
 
 class KpiDataViewSet(viewsets.GenericViewSet):
     def __init__(self, **kwargs: Any) -> None:
@@ -99,3 +139,9 @@ class KpiDataViewSet(viewsets.GenericViewSet):
                 )
         data = kb_interface(kpi_name, params)
         return Response({"data": data})
+
+
+class ArchiveViewSet(viewsets.ModelViewSet):
+    queryset = ArchivedReport.objects.all()
+    serializer_class = ArchivedReportSerializer
+    filterset_fields = ["user_type"]

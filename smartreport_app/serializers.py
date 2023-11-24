@@ -3,17 +3,23 @@ from .models import (
     KpiReportElement,
     ReportTemplatePage,
     ReportTemplate,
+    ReportTemplateImage,
     Kpi,
     Alarm,
     DashboardLayout,
+    ArchivedReport,
 )
 
 
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = KpiReportElement
-        fields = ["id", "kpi", "chart_type"]
+        fields = ["id", "kpi1", "chart_type"]
 
+class ReportTemplateImageSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = ReportTemplateImage
+        fields = "__all__"
 
 class ReportTemplatePageSerializer(serializers.ModelSerializer):
     elements = KpiReportElementSerializer(many=True)
@@ -22,7 +28,7 @@ class ReportTemplatePageSerializer(serializers.ModelSerializer):
         model = ReportTemplatePage
         fields = ["elements", "id", "layout"]
 
-
+# TODO CHECK IF WORKS
 class ReportTemplateSerializer(serializers.ModelSerializer):
     pages = ReportTemplatePageSerializer(many=True)
 
@@ -47,7 +53,9 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
 
             # Create each KPI report element for the page.
             for element_data in elements_data:
-                KpiReportElement.objects.create(report_page=report_page, **element_data)
+                kpis = element_data.pop("kpis")
+                element = KpiReportElement.objects.create(report_page=report_page, **element_data)
+                element.kpis.set(kpis)
 
         return report_template
 
@@ -73,3 +81,9 @@ class DashboardLayoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = DashboardLayout
         fields = "__all__"
+
+class ArchivedReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArchivedReport
+        fields = "__all__"
+

@@ -1,14 +1,17 @@
 
 def kb_interface(kpi_name, params):
+    kpi_list = params['kpi_list'] # id of the kpi in the kb
     plot_type = params['chart_type']
+    start_time = params['start_time']
+    end_time = params['end_time']
+    frequency = params['frequency']
 
-    # other parameters like the time period
 
     if plot_type == 'line':
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets': [{
-                'label': 'massa di filippo',
+                'label': f'{kpi_name}',
                 'data': [65, 59, 50, 40, 30, 20, 10],
                 'fill': False,
                 'borderColor': 'rgb(75, 192, 192)',
@@ -20,7 +23,7 @@ def kb_interface(kpi_name, params):
         response = {
             'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets': [{
-                'label': 'lunghezza del pene di paul',
+                'label': f'{kpi_name}',
                 'data': [20, 33, 45, 1, 34, 55, 40],
                 'backgroundColor': [
                     'rgba(255, 99, 132, 0.2)',
@@ -47,7 +50,7 @@ def kb_interface(kpi_name, params):
     elif plot_type == 'scatter':
         response = {
             'datasets': [{
-                'label': 'produzione di cagasburra',
+                'label': f'{kpi_name}',
                 'data': [{'x': -10,'y': 0 }, 
                          {'x': 0,  'y': 10}, 
                          {'x': 10, 'y': 5 }, 
@@ -61,9 +64,9 @@ def kb_interface(kpi_name, params):
     
     elif plot_type == 'pie' or plot_type == 'doughnut':
         response = {
-            'labels': ['pene', 'muscoli'],
+            'labels': ['Good', 'Bad'],
             'datasets': [{
-                'label': 'composizione del corpo di paul',
+                'label': f'{kpi_name}',
                 'data': [330, 60],
                 'backgroundColor': [
                     'rgba(255, 99, 132, 0.2)',
@@ -85,7 +88,7 @@ def kb_interface(kpi_name, params):
                 'Running'
             ],
             'datasets': [{
-                'label': 'ragnatela della mamma di filippo',
+                'label': 'Yesterday',
                 'data': [65, 59, 90, 81, 56, 55, 40],
                 'fill': True,
                 'backgroundColor': 'rgba(255, 99, 132, 0.2)',
@@ -95,7 +98,7 @@ def kb_interface(kpi_name, params):
                 'pointHoverBackgroundColor': '#fff',
                 'pointHoverBorderColor': 'rgb(255, 99, 132)'
             }, {
-                'label': 'ragnatela della mamma di paul',
+                'label': 'Today',
                 'data': [28, 48, 40, 19, 96, 27, 100],
                 'fill': True,
                 'backgroundColor': 'rgba(54, 162, 235, 0.2)',
@@ -110,7 +113,7 @@ def kb_interface(kpi_name, params):
     elif plot_type == 'scatter':
         response = {
             'datasets': [{
-                'label': 'Scatter Dataset',
+                'label': f'{kpi_name}',
                 'data': [{'x': -10,'y': 0}, {'x': 0,'y': 10 }, {'x': 10,'y': 5},{'x': 0.5, 'y': 5.5
                 }],
                 'backgroundColor': 'rgb(255, 99, 132)'
