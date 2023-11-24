@@ -51,8 +51,6 @@ class Kpi(models.Model):
         for chart in self.allowed_charts:
             if chart not in CHART_CHOICES:
                 raise ValidationError(f"{chart} is not a valid chart type")
-
-
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
 
@@ -73,7 +71,13 @@ class ReportTemplate(models.Model):
 
     def __str__(self):
         return self.name
-
+class ReportTemplateImage(models.Model):
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+    report_id = models.ForeignKey(ReportTemplate, on_delete=models.CASCADE)
+    img = models.TextField(null=True)
 
 class ReportTemplatePage(models.Model):
     report_template = models.ForeignKey(

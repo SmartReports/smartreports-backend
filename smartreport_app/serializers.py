@@ -3,6 +3,7 @@ from .models import (
     KpiReportElement,
     ReportTemplatePage,
     ReportTemplate,
+    ReportTemplateImage,
     Kpi,
     Alarm,
     DashboardLayout,
@@ -14,6 +15,10 @@ class KpiReportElementSerializer(serializers.ModelSerializer):
         model = KpiReportElement
         fields = ["id", "kpi", "chart_type"]
 
+class ReportTemplateImageSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = ReportTemplateImage
+        fields = "__all__"
 
 class ReportTemplatePageSerializer(serializers.ModelSerializer):
     elements = KpiReportElementSerializer(many=True)
