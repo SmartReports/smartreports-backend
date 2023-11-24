@@ -14,7 +14,7 @@ from .models import (
 class KpiReportElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = KpiReportElement
-        fields = ["id", "kpi1", "chart_type"]
+        fields = ["id", "kpis", "chart_type"]
 
 class ReportTemplateImageSerializer(serializers.ModelSerializer):
     class Meta: 

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
 
 
 class UserType(models.TextChoices):
@@ -35,12 +36,15 @@ def DEFAULT_USER_CHOICES():
 class Kpi(models.Model):
 
     # field from the kb
+    kb_uid = models.CharField(max_length=255)
     kb_name = models.CharField(max_length=255)
-    kb_id = models.CharField(max_length=255)
     kb_description = models.TextField(blank=True)
+    kb_taxonomy = models.TextField(blank=True)
+    kb_range = models.CharField(max_length=255, blank=True)
     kb_formula = models.TextField(blank=True)
     kb_unit = models.CharField(max_length=255, blank=True)
-    kb_source = models.CharField(max_length=255, blank=True)
+    kb_frequency = models.CharField(max_length=255, blank=True)
+    kb_creation_date = models.DateTimeField(blank=True)
     kb_counter = models.IntegerField(default=0)
 
     # internal field
@@ -51,7 +55,7 @@ class Kpi(models.Model):
         return self.kb_name
 
     priority = models.IntegerField(default=0)
-    isNew = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.kb_name
@@ -76,6 +80,8 @@ class Kpi(models.Model):
 
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
+
+    created = models.DateTimeField(auto_now_add=True)
 
     user_type = models.CharField(
         max_length=128,
