@@ -128,7 +128,7 @@ class KpiReportElement(models.Model):
         ReportTemplatePage, related_name="elements", on_delete=models.CASCADE
     )
 
-    # many to many
+    kpis = models.ManyToManyField(Kpi, related_name='appears_in')
 
     chart_type = models.CharField(
         max_length=128,
@@ -136,11 +136,6 @@ class KpiReportElement(models.Model):
 
     def __str__(self):
         return f"{self.report_page.report_template.name} - {self.kpi.name}"
-
-
-class KpiReportElementKpi(models.Model):
-    kpi = models.ForeignKey(Kpi, on_delete=models.CASCADE, related_name='appears_in')
-    kpiReportElement = models.ForeignKey(KpiReportElement, on_delete=models.CASCADE, related_name='kpis')
 
 
 class Alarm(models.Model):
