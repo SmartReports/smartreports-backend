@@ -1,6 +1,7 @@
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import UserType, ArchivedReport, Email, ReportTemplate
+from django.forms import ValidationError
+from .models import UserType, ArchivedReport, Email
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -53,5 +54,3 @@ def send_emails_for_unsent_reports():
         except Exception as e:
             print(f"An error occurred: {e}")
 
-# Example usage:
-send_emails_for_unsent_reports()
