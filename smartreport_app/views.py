@@ -2,6 +2,7 @@ import os
 from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
+from .email import send_emails_for_unsent_reports
 
 from .models import (
     KpiReportElement,
@@ -140,3 +141,25 @@ class ArchiveViewSet(viewsets.ModelViewSet):
     queryset = ArchivedReport.objects.all()
     serializer_class = ArchivedReportSerializer
     filterset_fields = ["user_type"]
+
+
+class SyncKBViewSet(viewsets.GenericViewSet):
+    def __init__(self, **kwargs: Any) -> None:
+        if (os.environ.get("DEBUG").lower() == "false"):
+            self.permission_classes = [IsAuthenticated]
+        super().__init__(**kwargs)
+    
+    def list(self, request):
+        sync_kpi_lits()
+        return Response({"message": "Syncing KB"})
+
+
+class SendEmailsViewSet(viewsets.GenericViewSet):
+    def __init__(self, **kwargs: Any) -> None:
+        if (os.environ.get("DEBUG").lower() == "false"):
+            self.permission_classes = [IsAuthenticated]
+        super().__init__(**kwargs)
+    
+    def list(self, request):
+        send_emails_for_unsent_reports()
+        return Response({"message": "Sending emails"})
