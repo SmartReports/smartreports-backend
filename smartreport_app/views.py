@@ -2,7 +2,7 @@ import os
 from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
-from .email import send_emails_for_unsent_reports
+from .email import send_emails_for_unsent_reports, send_emails_for_alarms
 
 from .models import (
     KpiReportElement,
@@ -154,7 +154,7 @@ class SyncKBViewSet(viewsets.GenericViewSet):
         return Response({"message": "Syncing KB"})
 
 
-class SendEmailsViewSet(viewsets.GenericViewSet):
+class SendReportEmailsViewSet(viewsets.GenericViewSet):
     def __init__(self, **kwargs: Any) -> None:
         if (os.environ.get("DEBUG").lower() == "false"):
             self.permission_classes = [IsAuthenticated]
@@ -162,4 +162,14 @@ class SendEmailsViewSet(viewsets.GenericViewSet):
     
     def list(self, request):
         send_emails_for_unsent_reports()
+        return Response({"message": "Sending emails"})
+
+class SendAlarmEmailsViewSet(viewsets.GenericViewSet):
+    def __init__(self, **kwargs: Any) -> None:
+        if (os.environ.get("DEBUG").lower() == "false"):
+            self.permission_classes = [IsAuthenticated]
+        super().__init__(**kwargs)
+    
+    def list(self, request):
+        send_emails_for_alarms()
         return Response({"message": "Sending emails"})

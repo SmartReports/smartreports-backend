@@ -1,7 +1,8 @@
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.forms import ValidationError
-from .models import UserType, ArchivedReport, Email
+from .models import UserType, ArchivedReport, Email, Alarm
+from .sync_db_kb import get_kpi_value
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -53,4 +54,36 @@ def send_emails_for_unsent_reports():
             print(f"Email with user_type {user_type} does not exist.")
         except Exception as e:
             print(f"An error occurred: {e}")
+
+
+def send_emails_for_alarms():
+    
+    alarms = Alarm.objects.all().order_by('kpi', 'user_type')
+
+    current_kpi_uid = None
+    current_kpi_value = None
+
+    for alarm in alarms:
+        
+        if alarm.kpi.kb_uid != current_kpi_uid: # update for the new kpi 
+            current_kpi_uid = alarm.kpi.kb_uid
+            current_kpi_value = get_kpi_value(current_kpi_uid)
+    
+
+        if current_kpi_value <= alarm.min_value or current_kpi_value >= alarm.max_value:
+            # Create an EmailMessage object
+            subject = 'SmartReports Alarm'
+            message = f'The value of {alarm.kpi.kb_name} is {current_kpi_value}.'
+            email = EmailMessage(
+                subject = subject,
+                body = message,
+                from_email = settings.DEFAULT_FROM_EMAIL,
+                to = Email.objects.get(user_type=alarm.user_type).emails,
+                reply_to = [settings.DEFAULT_FROM_EMAIL],
+            )
+
+            print(f'sending mail for {current_kpi_uid} to {Email.objects.get(user_type=alarm.user_type).emails}')
+
+            # Send the email
+            print(f'Success: {email.send()== 1}')
 
