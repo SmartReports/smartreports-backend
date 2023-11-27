@@ -197,6 +197,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+STORAGES={
+    "default": {
+        "BACKEND": "django_storage_supabase.supabase",
+    }
+}
 
 DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
 SUPABASE_API_KEY = os.environ.get('SUPABASE_ANON_KEY')
