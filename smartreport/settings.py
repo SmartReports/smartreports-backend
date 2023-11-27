@@ -203,7 +203,7 @@ STORAGES={
     }
 }
 
-DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
+# DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
 SUPABASE_API_KEY = os.environ.get('SUPABASE_ANON_KEY')
 SUPABASE_URL = "https://khjwjcfckbsfpvdmcrak.supabase.co"
 SUPABASE_ROOT_PATH = '/smartreports/'
