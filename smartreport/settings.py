@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     ".vercel.app",
     ".now.sh",
     "api.smartreports.it",
+    "smartreports.ianniciello.me"
 ]
 
 
