@@ -196,3 +196,9 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+
+DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
+SUPABASE_API_KEY = os.environ.get('SUPABASE_ANON_KEY')
+SUPABASE_URL = "https://khjwjcfckbsfpvdmcrak.supabase.co"
+SUPABASE_ROOT_PATH = '/smartreports/'

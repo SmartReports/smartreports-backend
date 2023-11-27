@@ -107,6 +107,10 @@ class KpiDataViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         params = request.query_params
+
+        if 'kpis' not in params or params.getlist("kpis") == []:
+            return Response({"message": "The required parameter 'kpis' is missing"}, status=status.HTTP_400_BAD_REQUEST)
+
         list_of_internal_ids = params.getlist("kpis")[0].split(',') # list of kpis to show in the plot
         
         queryset = Kpi.objects.filter(id__in=list_of_internal_ids)
