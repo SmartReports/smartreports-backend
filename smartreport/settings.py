@@ -200,7 +200,10 @@ EMAIL_USE_SSL = True
 STORAGES={
     "default": {
         "BACKEND": "django_storage_supabase.supabase",
-    }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
 
 # DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
