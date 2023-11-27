@@ -93,6 +93,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://smartreports.it",
     "http://smartreports-frontend.vercel.app",
+    "http://smartreports.ianniciello.me"
 ]
 
 # Database
