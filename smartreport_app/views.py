@@ -82,7 +82,7 @@ class KpiFilter(django_filters.FilterSet):
             return queryset
     
 
-class KpiViewSet(viewsets.ReadOnlyModelViewSet):
+class KpiViewSet(viewsets.ModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
     filterset_class = KpiFilter
