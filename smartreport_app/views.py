@@ -24,6 +24,7 @@ from .serializers import (
     AlarmSerializer,
     DashboardLayoutSerializer,
     ArchivedReportSerializer,
+    SmartTemplateSerializer,
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,7 +36,7 @@ from .kb_interface import kb_interface
 
 class SmartReportTemplateViewSet(viewsets.ModelViewSet):
     queryset = SmartReportTemplate.objects.filter(smart=True)
-    serializer_class = ReportTemplateSerializer
+    serializer_class = SmartTemplateSerializer
     filterset_fields = ["user_type"]
 
 class ReportTemplateViewSet(viewsets.ModelViewSet):
