@@ -28,16 +28,17 @@ def send_emails_for_unsent_reports():
                 # Check if the report template matches the user's template
                 if report.template.user_type == user_type:
                     # Iterate over each Email instance
-                    for email_instance in email_instances:
+                    for email_address in email_instance.emails:
                         # Create an EmailMessage object
                         subject = 'Subject of your email'
-                        message = 'Body of your email'
+                        message = f'Dear {report.template.user_type},\nThis is your {report.template.frequency} report.'
+
                         email = EmailMessage(
-                            subject,
-                            message,
-                            settings.DEFAULT_FROM_EMAIL,
-                            email_instance.emails,
-                            reply_to=[settings.DEFAULT_FROM_EMAIL],
+                            subject = subject,
+                            body = message,
+                            from_email = settings.DEFAULT_FROM_EMAIL,
+                            to = [email_address],
+                            reply_to = [settings.DEFAULT_FROM_EMAIL],
                         )
 
                         # Get the file content from the ArchivedReport
@@ -74,19 +75,19 @@ def send_emails_for_alarms():
 
         if current_kpi_value <= alarm.min_value or current_kpi_value >= alarm.max_value:
             # Create an EmailMessage object
-            subject = 'SmartReports Alarm'
-            message = f'The value of {alarm.kpi.kb_name} is {current_kpi_value}.'
-            email = EmailMessage(
-                subject = subject,
-                body = message,
-                from_email = settings.DEFAULT_FROM_EMAIL,
-                to = Email.objects.get(user_type=alarm.user_type).emails,
-                reply_to = [settings.DEFAULT_FROM_EMAIL],
-            )
-            print(subject, message, settings.DEFAULT_FROM_EMAIL, Email.objects.get(user_type=alarm.user_type).emails, [settings.DEFAULT_FROM_EMAIL], sep='\n' )
-
-            print(f'sending mail for {current_kpi_uid} to {Email.objects.get(user_type=alarm.user_type).emails}')
-
-            # Send the email
-            print(f'Success: {email.send()== 1}')
+            subject = 'SmartReports Alarm Notification'
+            message = f'Dear {alarm.user_type},\nThe value of {alarm.kpi.kb_name} is {current_kpi_value}.'
+            
+            for email_address in Email.objects.get(user_type=alarm.user_type).emails:
+                email = EmailMessage(
+                    subject = subject,
+                    body = message,
+                    from_email = settings.DEFAULT_FROM_EMAIL,
+                    to = [email_address],
+                    reply_to = [settings.DEFAULT_FROM_EMAIL],
+                )
+                
+                print(f'sending mail for {current_kpi_uid} to {email_address}')
+                # Send the email
+                print(f'Success: {email.send()== 1}')
 

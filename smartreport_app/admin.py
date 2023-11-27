@@ -7,7 +7,8 @@ from .models import (
     KpiReportElement,
     Alarm,
     DashboardLayout,
-    Email
+    Email,
+    ArchivedReport,
 )
 
 
@@ -77,3 +78,10 @@ class EmailAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_type', 'emails')
     list_filter = ('user_type', )
     search_fields = ('user_type', )
+
+@admin.register(ArchivedReport)
+class ArchivedReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'created', 'sent')
+    list_filter = ('user_type', )
+    search_fields = ('user_type', )
+    ordering = ('created',)
