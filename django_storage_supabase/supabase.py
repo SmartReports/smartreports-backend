@@ -16,7 +16,7 @@ from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.core.files.base import File
 from django.utils import timezone
 from django.utils.deconstruct import deconstructible
-import supabase
+from supabase import create_client
 
 from django_storage_supabase.base import BaseStorage
 from django_storage_supabase.compress import CompressedFileMixin, CompressStorageMixin
@@ -108,7 +108,7 @@ class SupabaseStorage(CompressStorageMixin, BaseStorage):
                     "Both SUPABASE_URL and SUPABASE_API_KEY must be "
                     "provided together."
                 )
-            self._client = supabase.create_client(supabase_url, supabase_api_key).storage
+            self._client = create_client(supabase_url, supabase_api_key).storage
 
         return self._client
 
