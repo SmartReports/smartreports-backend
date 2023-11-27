@@ -79,6 +79,12 @@ class Kpi(models.Model):
 
 
 class ReportTemplate(models.Model):
+    smart = models.BooleanField(
+        default=False,
+        editable=False,
+        auto_created=True,
+    )
+
     name = models.CharField(max_length=255)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -100,6 +106,13 @@ class ReportTemplate(models.Model):
 
     def __str__(self):
         return self.name
+    
+class SmartReportTemplate(ReportTemplate):
+    class Meta():
+        proxy = True
+        verbose_name = 'Smart Report Template'
+        verbose_name_plural = 'Smart Report Templates'
+        
 class ReportTemplateImage(models.Model):
     user_type = models.CharField(
         max_length=128,

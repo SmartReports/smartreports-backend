@@ -13,6 +13,7 @@ from .models import (
     Alarm,
     DashboardLayout,
     ArchivedReport,
+    SmartReportTemplate,
 )
 from .serializers import (
     ReportTemplatePageSerializer,
@@ -32,9 +33,13 @@ from rest_framework.decorators import api_view
 
 from .kb_interface import kb_interface
 
+class SmartReportTemplateViewSet(viewsets.ModelViewSet):
+    queryset = SmartReportTemplate.objects.filter(smart=True)
+    serializer_class = ReportTemplateSerializer
+    filterset_fields = ["user_type"]
 
 class ReportTemplateViewSet(viewsets.ModelViewSet):
-    queryset = ReportTemplate.objects.all()
+    queryset = ReportTemplate.objects.filter(smart=False)
     serializer_class = ReportTemplateSerializer
     filterset_fields = ["user_type"]
 
