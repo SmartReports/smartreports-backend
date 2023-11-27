@@ -13,7 +13,6 @@ import os
 from os.path import join as join, dirname
 from pathlib import Path
 from dotenv import load_dotenv
-from django_storage_supabase import SupabaseStorage
 
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
