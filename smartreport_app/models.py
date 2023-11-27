@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
 
 
 class UserType(models.TextChoices):
@@ -18,28 +19,46 @@ CHART_CHOICES = (
     "doughnut",
     "radar",
 )
-
-
 def DEFAULT_CHART_CHOICES():
     return [*CHART_CHOICES]
 
+USER_CHOICES = (
+    "doctor",
+    "parent",
+    "project_manager",
+    "machine_maintainer",
+)
+def DEFAULT_USER_CHOICES():
+    return [*USER_CHOICES]
+
+
 
 class Kpi(models.Model):
-    name = models.CharField(max_length=255)
 
-    user_type = models.CharField(
-        max_length=128,
-        choices=UserType.choices,
-    )
+    # field from the kb
+    kb_uid = models.CharField(max_length=255)
+    kb_name = models.CharField(max_length=255)
+    kb_description = models.TextField(blank=True)
+    kb_taxonomy = models.TextField(blank=True)
+    kb_range = models.CharField(max_length=255, blank=True)
+    kb_formula = models.TextField(blank=True)
+    kb_unit = models.CharField(max_length=255, blank=True)
+    kb_frequency = models.CharField(max_length=255, blank=True)
+    kb_creation_date = models.DateTimeField(blank=True)
+    kb_counter = models.IntegerField(default=0)
 
-    allowed_charts = models.JSONField(default=DEFAULT_CHART_CHOICES)
+    # internal field
+    user_type = models.JSONField(default=DEFAULT_USER_CHOICES, blank=True, null=True)
+    allowed_charts = models.JSONField(default=DEFAULT_CHART_CHOICES, blank=True, null=True)
+
+    def __str__(self):
+        return self.kb_name
 
     priority = models.IntegerField(default=0)
 
-    isNew = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.kb_name
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -51,10 +70,18 @@ class Kpi(models.Model):
         for chart in self.allowed_charts:
             if chart not in CHART_CHOICES:
                 raise ValidationError(f"{chart} is not a valid chart type")
+        
+        if not isinstance(self.user_type, list):
+            raise ValidationError("User type must be a list")
+        for user in self.user_type:
+            if user not in USER_CHOICES:
+                raise ValidationError(f"{user} is not a valid user type")
 
 
 class ReportTemplate(models.Model):
     name = models.CharField(max_length=255)
+
+    created = models.DateTimeField(auto_now_add=True)
 
     user_type = models.CharField(
         max_length=128,
@@ -73,7 +100,13 @@ class ReportTemplate(models.Model):
 
     def __str__(self):
         return self.name
-
+class ReportTemplateImage(models.Model):
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+    report_id = models.ForeignKey(ReportTemplate, on_delete=models.CASCADE)
+    img = models.TextField(null=True)
 
 class ReportTemplatePage(models.Model):
     report_template = models.ForeignKey(
@@ -94,13 +127,12 @@ class KpiReportElement(models.Model):
     report_page = models.ForeignKey(
         ReportTemplatePage, related_name="elements", on_delete=models.CASCADE
     )
-    kpi = models.ForeignKey(Kpi, on_delete=models.CASCADE)
+
+    kpis = models.ManyToManyField(Kpi)
+
     chart_type = models.CharField(
         max_length=128,
     )
-
-    def __str__(self):
-        return f"{self.report_page.report_template.name} - {self.kpi.name}"
 
 
 class Alarm(models.Model):
