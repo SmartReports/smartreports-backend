@@ -34,9 +34,10 @@ class ReportTemplateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReportTemplate
-        fields = "__all__"
+        exclude = ('smart',)
 
     def create(self, validated_data):
+
         # Extract pages data from the validated data.
         pages_data = validated_data.pop("pages")
 
