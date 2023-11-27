@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_storage_supabase",
     "smartreport_app",
     "corsheaders",
     "django_filters",
@@ -197,16 +198,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-STORAGES={
-    "default": {
-        "BACKEND": "django_storage_supabase.supabase",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
 
-# DEFAULT_FILE_STORAGE = 'django_storage_supabase.supabase'
-SUPABASE_API_KEY = os.environ.get('SUPABASE_ANON_KEY')
-SUPABASE_URL = "https://khjwjcfckbsfpvdmcrak.supabase.co"
-SUPABASE_ROOT_PATH = '/smartreports/'
+SUPABASE_API_KEY = os.environ.get('SUPABASE_API_KEY')
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+# SUPABASE_ROOT_PATH = '/'
+SUPABASE_STORAGE_BUCKET_NAME = os.environ.get('SUPABASE_STORAGE_BUCKET_NAME')
