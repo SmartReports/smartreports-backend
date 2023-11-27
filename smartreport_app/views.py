@@ -137,7 +137,7 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         return Response({"data": data})
 
 
-class ArchiveViewSet(viewsets.ModelViewSet):
+class ArchivedReportViewSet(viewsets.ModelViewSet):
     queryset = ArchivedReport.objects.all()
     serializer_class = ArchivedReportSerializer
     filterset_fields = ["user_type"]

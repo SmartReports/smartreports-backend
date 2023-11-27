@@ -15,41 +15,43 @@ def send_emails_for_unsent_reports():
                 user_type=user_type, sent=False
             )
 
-            # Get the corresponding Email instance for the user type
-            email_instance = Email.objects.get(user_type=user_type)
+            # Get all corresponding Email instances for the user type
+            email_instances = Email.objects.filter(user_type=user_type)
 
             # Validate that emails field is a list
-            if not isinstance(email_instance.emails, list):
-                raise ValidationError("Emails must be a list")
+            for email_instance in email_instances:
+                if not isinstance(email_instance.emails, list):
+                    raise ValidationError("Emails must be a list")
 
             # Iterate over each unsent report and send an email for each file
             for report in unsent_reports:
                 # Check if the report template matches the user's template
                 if report.template.user_type == user_type:
-                    # Create an EmailMessage object
-                    subject = 'Subject of your email'
-                    message = 'Body of your email'
-                    email = EmailMessage(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        email_instance.emails,
-                        reply_to=[settings.DEFAULT_FROM_EMAIL],
-                    )
+                    # Iterate over each Email instance
+                    for email_instance in email_instances:
+                        # Create an EmailMessage object
+                        subject = 'Subject of your email'
+                        message = 'Body of your email'
+                        email = EmailMessage(
+                            subject,
+                            message,
+                            settings.DEFAULT_FROM_EMAIL,
+                            email_instance.emails,
+                            reply_to=[settings.DEFAULT_FROM_EMAIL],
+                        )
 
-                    # Get the file content from the ArchivedReport
-                    file_content = report.file.read()
+                        # Get the file content from the ArchivedReport
+                        file_content = report.file.read()
 
-                    # Attach the file to the email
-                    email.attach(report.file.name, file_content, 'application/octet-stream')
+                        # Attach the file to the email
+                        email.attach(report.file.name, file_content, 'application/octet-stream')
 
-                    # Send the email
-                    email.send()
+                        # Send the email
+                        email.send()
 
                     # Update the sent status of the ArchivedReport
                     report.sent = True
                     report.save()
-
         except Email.DoesNotExist:
             print(f"Email with user_type {user_type} does not exist.")
         except Exception as e:
@@ -81,6 +83,7 @@ def send_emails_for_alarms():
                 to = Email.objects.get(user_type=alarm.user_type).emails,
                 reply_to = [settings.DEFAULT_FROM_EMAIL],
             )
+            print(subject, message, settings.DEFAULT_FROM_EMAIL, Email.objects.get(user_type=alarm.user_type).emails, [settings.DEFAULT_FROM_EMAIL], sep='\n' )
 
             print(f'sending mail for {current_kpi_uid} to {Email.objects.get(user_type=alarm.user_type).emails}')
 
