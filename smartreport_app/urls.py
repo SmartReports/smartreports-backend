@@ -14,6 +14,7 @@ router.register(r"dashboard-layout", views.DashboardLayoutViewSet)
 router.register(r"report-archive", views.ArchivedReportViewSet)
 router.register(r"kpi-data", views.KpiDataViewSet, basename="kpi-data")
 router.register(r'sync-kb', views.SyncKBViewSet, basename='sync-kb')
+router.register(r'smart-reports', views.SmartReportTemplateViewSet, basename='smart-reports')
 router.register(r'send-reports', views.SendReportEmailsViewSet, basename='send-emails')
 router.register(r'send-alarms', views.SendAlarmEmailsViewSet, basename='send-alarms')
 

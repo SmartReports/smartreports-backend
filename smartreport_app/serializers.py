@@ -8,6 +8,7 @@ from .models import (
     Alarm,
     DashboardLayout,
     ArchivedReport,
+    SmartReportTemplate,
 )
 
 
@@ -28,15 +29,46 @@ class ReportTemplatePageSerializer(serializers.ModelSerializer):
         model = ReportTemplatePage
         fields = ["elements", "id", "layout"]
 
+class SmartTemplateSerializer(serializers.ModelSerializer):
+    pages = ReportTemplatePageSerializer(many=True)
+    class Meta:
+        model = SmartReportTemplate
+        exclude = ("smart",)
+
+    def create(self, validated_data):
+
+        # Extract pages data from the validated data.
+        pages_data = validated_data.pop("pages")
+
+        # Create the report template instance.
+        report_template = SmartReportTemplate.objects.create(**validated_data, smart=True)
+
+        # Create report template pages and elements.
+        for page_data in pages_data:
+            elements_data = page_data.pop("elements")
+            # Create report template page instance.
+            report_page = ReportTemplatePage.objects.create(
+                report_template=report_template, **page_data
+            )
+
+            # Create each KPI report element for the page.
+            for element_data in elements_data:
+                kpis = element_data.pop("kpis")
+                element = KpiReportElement.objects.create(report_page=report_page, **element_data)
+                element.kpis.set(kpis)
+
+        return report_template
+
 # TODO CHECK IF WORKS
 class ReportTemplateSerializer(serializers.ModelSerializer):
     pages = ReportTemplatePageSerializer(many=True)
 
     class Meta:
         model = ReportTemplate
-        fields = "__all__"
+        exclude = ('smart',)
 
     def create(self, validated_data):
+
         # Extract pages data from the validated data.
         pages_data = validated_data.pop("pages")
 

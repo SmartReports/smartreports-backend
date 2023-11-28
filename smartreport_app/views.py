@@ -13,6 +13,7 @@ from .models import (
     Alarm,
     DashboardLayout,
     ArchivedReport,
+    SmartReportTemplate,
 )
 from .serializers import (
     ReportTemplatePageSerializer,
@@ -23,6 +24,7 @@ from .serializers import (
     AlarmSerializer,
     DashboardLayoutSerializer,
     ArchivedReportSerializer,
+    SmartTemplateSerializer,
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -32,9 +34,13 @@ from rest_framework.decorators import api_view
 
 from .kb_interface import kb_interface
 
+class SmartReportTemplateViewSet(viewsets.ModelViewSet):
+    queryset = SmartReportTemplate.objects.filter(smart=True)
+    serializer_class = SmartTemplateSerializer
+    filterset_fields = ["user_type"]
 
 class ReportTemplateViewSet(viewsets.ModelViewSet):
-    queryset = ReportTemplate.objects.all()
+    queryset = ReportTemplate.objects.filter(smart=False)
     serializer_class = ReportTemplateSerializer
     filterset_fields = ["user_type"]
 
@@ -76,7 +82,7 @@ class KpiFilter(django_filters.FilterSet):
             return queryset
     
 
-class KpiViewSet(viewsets.ReadOnlyModelViewSet):
+class KpiViewSet(viewsets.ModelViewSet):
     queryset = Kpi.objects.all()
     serializer_class = KpiSerializer
     filterset_class = KpiFilter
