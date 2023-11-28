@@ -25,7 +25,7 @@ os.environ.setdefault(
     "SECRET_KEY", "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj"
 )
 
-DEBUG = os.environ.get("DEBUG").lower() == "true"
+DEBUG = not os.environ.get("DEBUG").lower() == "false"
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = [
@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "django_storage_supabase",
     "smartreport_app",
     "corsheaders",
     "django_filters",
@@ -186,7 +185,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-DEBUG = True
 
 DEFAULT_FROM_EMAIL = 'updates@smartreports.it'
 

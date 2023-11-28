@@ -57,7 +57,7 @@ class TemplateRender:
                 if elapsed < frequency:
                     continue
             pages = report['pages']
-            report['pages'] = []
+            report['pages'] = {}
             for page in pages:
                 for i, element in enumerate(page['elements']):
                     kpis = ','.join(list([str(kpi) for kpi in element['kpis']]))
@@ -67,11 +67,10 @@ class TemplateRender:
                     kpis_data = json.loads(kpis_data)['data']
                     kpis_label = kpis_data['labels']
                     kpis_data = kpis_data['datasets'][0]['data']
-                    report['pages'].append({str(i + 1):
-                                                {'data': kpis_data,
+                    report['pages'][str(i+1)] = {'data': kpis_data,
                                                  'labels': kpis_label,
                                                  'layout': page['layout'],
-                                                 'chart_type': element['chart_type']}})
+                                                 'chart_type': element['chart_type']}
             # report to json
             self.data.append(report)
 
@@ -101,7 +100,7 @@ class TemplateRender:
 
     def plot(self, pages, report_name, data):
         for i, page in enumerate(pages):
-            page_layout = data[page].pop("layout")
+            page_layout = page.pop("layout")
             self.plot_graph(range(len(data[page]['data'])), data[page]['data'], 'time', 'value', page_layout,
                             report_name + "page" + str(i))
 
@@ -136,6 +135,7 @@ archive = [{
     "created": "2023-11-27T13:37:23.848243",
     "sent": "false",
     "user_type": "machine_maintainer",
+    "file_name":  "DM_Report_Group07.pdf",
     "file": "http://localhost:8000/reports/DM_Report_Group07.pdf",
     "template": 1
 }]
