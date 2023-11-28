@@ -31,7 +31,7 @@ def send_emails_for_unsent_reports():
                     # Iterate over each Email instance
                     for email_address in email_instance.emails:
                         # Create an EmailMessage object
-                        subject = 'Subject of your email'
+                        subject = 'Your SmartReport'
                         message = f'Dear {report.template.user_type},\nThis is your {report.template.frequency} report.'
 
                         email = EmailMessage(
@@ -46,11 +46,15 @@ def send_emails_for_unsent_reports():
                         file_content = report.file
                         file_content = b64decode(file_content, validate=True)
 
+                        if not report.file_name.endswith('.pdf'):
+                            report.file_name = report.file_name + '.pdf'
+
                         # Attach the file to the email
                         email.attach(report.file_name, file_content, 'application/octet-stream')
-
+                        
+                        print(f'sending mail for {report.file_name} to {email_address}')
                         # Send the email
-                        email.send()
+                        print(f'Success: {email.send()== 1}')
 
                     # Update the sent status of the ArchivedReport
                     report.sent = True
