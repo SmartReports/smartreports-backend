@@ -136,6 +136,7 @@ archive = [{
     "created": "2023-11-27T13:37:23.848243",
     "sent": "false",
     "user_type": "machine_maintainer",
+    "file_name":  "DM_Report_Group07.pdf",
     "file": "http://localhost:8000/reports/DM_Report_Group07.pdf",
     "template": 1
 }]
