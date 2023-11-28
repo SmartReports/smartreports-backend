@@ -7,6 +7,7 @@ from .models import (
     KpiReportElement,
     Alarm,
     DashboardLayout,
+    SmartReportTemplate,
     Email,
     ArchivedReport,
 )
@@ -32,8 +33,14 @@ class KpiAdmin(admin.ModelAdmin):
 
 @admin.register(ReportTemplate)
 class ReportTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "frequency")
-    list_filter = ("frequency",)
+    list_display = ("id", "name", "frequency", "smart")
+    list_filter = ("frequency", "smart",)
+    inlines = [ReportTemplatePageInline]
+
+@admin.register(SmartReportTemplate)
+class SmartReportTemplateAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "frequency", "smart")
+    list_filter = ("frequency", "smart",)
     inlines = [ReportTemplatePageInline]
 
 
