@@ -49,6 +49,10 @@ class Kpi(models.Model):
 
     # internal field
     user_type = models.JSONField(default=DEFAULT_USER_CHOICES, blank=True, null=True)
+    priority_doctor = models.IntegerField(default=0)
+    priority_parent = models.IntegerField(default=0)
+    priority_project_manager = models.IntegerField(default=0)
+    priority_machine_maintainer = models.IntegerField(default=0)
     allowed_charts = models.JSONField(default=DEFAULT_CHART_CHOICES, blank=True, null=True)
 
     def __str__(self):
@@ -180,7 +184,7 @@ class ArchivedReport(models.Model):
         ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
     )
 
-    file = models.FileField(upload_to="reports/")
+    file = models.FileField(upload_to="tmp/reports/")
 
 
 class Email(models.Model):

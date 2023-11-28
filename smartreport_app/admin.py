@@ -6,7 +6,9 @@ from .models import (
     ReportTemplateImage,
     KpiReportElement,
     Alarm,
-    DashboardLayout
+    DashboardLayout,
+    Email,
+    ArchivedReport,
 )
 
 
@@ -70,3 +72,16 @@ class ReportTemplateImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_type', 'report_id', 'img')
     list_filter = ('report_id', 'user_type')
     search_fields = ('report_id', 'user_type')
+
+@admin.register(Email)
+class EmailAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'emails')
+    list_filter = ('user_type', )
+    search_fields = ('user_type', )
+
+@admin.register(ArchivedReport)
+class ArchivedReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_type', 'created', 'sent')
+    list_filter = ('user_type', )
+    search_fields = ('user_type', )
+    ordering = ('created',)

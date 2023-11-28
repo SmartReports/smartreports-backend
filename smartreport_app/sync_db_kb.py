@@ -2,16 +2,18 @@ import requests
 from .models import Kpi
 
 
-URL = 'https://vornao.dev:8888/kpis'
+BASE_URL = 'https://vornao.dev:8888'
 USERNAME = 'smartapp'
 PASSWORD = 'api'
 
 
 def sync_kpi_lits():
 
-    print("start sync_kpi_lits")
+    url = BASE_URL+'/kpis/'
 
-    kpi_list = requests.get(URL, auth=(USERNAME, PASSWORD))
+    print(f"start sync_kpi_lits, URL={url}")
+
+    kpi_list = requests.get(url, auth=(USERNAME, PASSWORD))
 
     for kpi in kpi_list.json()['data']:
 
@@ -51,6 +53,10 @@ def sync_kpi_lits():
             kpi_instance.save()
             print(f"KPI {kpi['uid']} created")
 
+
+def get_kpi_value(kpi_uid):
+    kpi_value = requests.get(f'{BASE_URL}/kpi/{kpi_uid}', auth=(USERNAME, PASSWORD))
+    return kpi_value.json()['data']['value']
     
 if __name__ == '__main__':
     sync_kpi_lits()
