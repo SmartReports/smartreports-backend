@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
+from django_storage_supabase import SupabaseStorage
 
 
 class UserType(models.TextChoices):
@@ -184,7 +185,8 @@ class ArchivedReport(models.Model):
         ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
     )
 
-    file = models.FileField(upload_to="tmp/reports/")
+    file = models.TextField(null=True)
+    file_name = models.TextField(null=True)
 
 
 class Email(models.Model):

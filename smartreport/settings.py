@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_storage_supabase",
     "smartreport_app",
     "corsheaders",
     "django_filters",

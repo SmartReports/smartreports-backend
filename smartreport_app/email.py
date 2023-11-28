@@ -3,6 +3,7 @@ from django.conf import settings
 from django.forms import ValidationError
 from .models import UserType, ArchivedReport, Email, Alarm
 from .sync_db_kb import get_kpi_value
+from base64 import b64decode
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -42,10 +43,11 @@ def send_emails_for_unsent_reports():
                         )
 
                         # Get the file content from the ArchivedReport
-                        file_content = report.file.read()
+                        file_content = report.file
+                        file_content = b64decode(file_content, validate=True)
 
                         # Attach the file to the email
-                        email.attach(report.file.name, file_content, 'application/octet-stream')
+                        email.attach(report.file_name, file_content, 'application/octet-stream')
 
                         # Send the email
                         email.send()
