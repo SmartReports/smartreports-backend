@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be882393-b6d8-4f8d-81f9-45eecda80d45" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/smartreport/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/smartreport/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smartreport_app/migrations/0014_kpi_priority_doctor_kpi_priority_machine_maintainer_and_more.py" beforeDir="false" afterPath="$PROJECT_DIR$/smartreport_app/migrations/0014_kpi_priority_doctor_kpi_priority_machine_maintainer_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smartreport_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/smartreport_app/models.py" afterDir="false" />
-    </list>
+    <list default="true" id="be882393-b6d8-4f8d-81f9-45eecda80d45" name="Changes" comment="update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +56,6 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Reverting in main",
     "last_opened_file_path": "/Users/paulmagos/smartreports/smartreports-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -87,7 +82,7 @@
       <updated>1701080368456</updated>
       <workItem from="1701080369512" duration="26996000" />
       <workItem from="1701128470896" duration="1688000" />
-      <workItem from="1701130163469" duration="34000" />
+      <workItem from="1701130163469" duration="704000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />

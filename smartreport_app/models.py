@@ -184,7 +184,7 @@ class ArchivedReport(models.Model):
         ReportTemplate, related_name="archived_reports", on_delete=models.CASCADE
     )
 
-    file = models.FileField(upload_to="reports/")
+    file = models.FileField(upload_to="tmp/reports/")
 
 
 class Email(models.Model):
