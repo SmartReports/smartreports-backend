@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "django_storage_supabase",
     "smartreport_app",
     "corsheaders",
     "django_filters",
@@ -186,7 +185,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-DEBUG = True
 
 DEFAULT_FROM_EMAIL = 'updates@smartreports.it'
 
