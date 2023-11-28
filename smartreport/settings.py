@@ -34,7 +34,6 @@ ALLOWED_HOSTS = [
     ".vercel.app",
     ".now.sh",
     "api.smartreports.it",
-    "smartreports.ianniciello.me"
 ]
 
 
@@ -93,7 +92,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://smartreports.it",
     "http://smartreports-frontend.vercel.app",
-    "http://smartreports.ianniciello.me"
 ]
 
 # Database
