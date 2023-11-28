@@ -157,10 +157,10 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
-# if (os.environ.get("DEBUG").lower() == "false"):
-#     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
-#         'smartreport_app.permissions.FullObjectPermission',
-#     )
+if (os.environ.get("DEBUG").lower() == "false"):
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+        'smartreport_app.permissions.FullObjectPermission',
+    )
 
 
 # Internationalization
@@ -197,9 +197,3 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-
-
-SUPABASE_API_KEY = os.environ.get('SUPABASE_API_KEY')
-SUPABASE_URL = os.environ.get('SUPABASE_URL')
-# SUPABASE_ROOT_PATH = '/'
-SUPABASE_STORAGE_BUCKET_NAME = os.environ.get('SUPABASE_STORAGE_BUCKET_NAME')
