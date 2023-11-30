@@ -1,125 +1,103 @@
 
 def kb_interface(params):
-    # kpi_list = params['kpi_list'] # id of the kpi in the kb
     plot_type = params['chart_type']
-    # start_time = params['start_time']
-    # end_time = params['end_time']
-    # frequency = params['frequency']
+    kpi_list = params['kpi_list'] # id of the kpi in the kb
+    start_time = params['start_time']
+    end_time = params['end_time']
+    frequency = params['frequency']
 
-    kpi_name = "pippo"
+    colors = [
+        'rgb(0.4, 0.7607843137254902, 0.6470588235294118)',
+        'rgb(0.9882352941176471, 0.5529411764705883, 0.3843137254901961)',
+        'rgb(0.5529411764705883, 0.6274509803921569, 0.796078431372549)',
+        'rgb(0.9058823529411765, 0.5411764705882353, 0.7647058823529411)',
+        'rgb(0.6509803921568628, 0.8470588235294118, 0.32941176470588235)',
+        'rgb(1.0, 0.8509803921568627, 0.1843137254901961)',
+        'rgb(0.8980392156862745, 0.7686274509803922, 0.5803921568627451)',
+        'rgb(0.7019607843137254, 0.7019607843137254, 0.7019607843137254)'
+    ]
+    frequencies_lbls = {
+        'monthly': [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ],
+        'hourly': [str(i) for i in range(24)],
+        'daily': [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday'
+        ]
+    }
 
-    if plot_type == 'line':
-        response = {
-            'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets': [{
-                'label': f'{kpi_name}',
-                'data': [65, 59, 50, 40, 30, 20, 10],
-                'fill': False,
-                'borderColor': 'rgb(75, 192, 192)',
-                'tension': 0.1
-                }]
-        }
+    if frequency == 'monthly':
+        start_freq = start_time.month # int in [0,11]
+    elif frequency == 'daily':
+        start_freq = start_time.day # int in [0,6]
+    elif frequency == 'hourly':
+        start_freq = start_time.hour # int in [0,11]
+    elif frequency == 'weekly':
+        start_freq = 0
 
-    elif plot_type == 'bar':
-        response = {
-            'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets': [{
-                'label': f'{kpi_name}',
-                'data': [20, 33, 45, 1, 34, 55, 40],
-                'backgroundColor': [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)'
-                ],
-                'borderColor': [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)',
-                ],
-                'borderWidth': 1
-            }]
-        }
 
-    elif plot_type == 'scatter':
-        response = {
-            'datasets': [{
-                'label': f'{kpi_name}',
-                'data': [{'x': -10,'y': 0 }, 
-                         {'x': 0,  'y': 10}, 
-                         {'x': 10, 'y': 5 }, 
-                         {'x': 0.5, 'y': 5.5 },
-                         {'x': -10, 'y': -5},
-                         {'x': -5, 'y': -10},
-                         ],
-                'backgroundColor': 'rgb(255, 99, 132)'
-            }],
-        }
-    
-    elif plot_type == 'pie' or plot_type == 'doughnut':
-        response = {
-            'labels': ['Good', 'Bad'],
-            'datasets': [{
-                'label': f'{kpi_name}',
-                'data': [330, 60],
-                'backgroundColor': [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-            'hoverOffset': 4
-            }]
-        }
+    kb_resps = []
+    for i, kpi_id in enumerate(kpi_list):
+        kn_resp = get_kpi(kpi_id, start_time, end_time, frequency) # call to group 1 api
+        kb_resps.append(kn_resp)
 
-    elif plot_type == 'radar':
-        response = {
-            'labels': [
-                'Eating',
-                'Drinking',
-                'Sleeping',
-                'Designing',
-                'Coding',
-                'Cycling',
-                'Running'
-            ],
-            'datasets': [{
-                'label': 'Yesterday',
-                'data': [65, 59, 90, 81, 56, 55, 40],
-                'fill': True,
-                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
-                'borderColor': 'rgb(255, 99, 132)',
-                'pointBackgroundColor': 'rgb(255, 99, 132)',
-                'pointBorderColor': '#fff',
-                'pointHoverBackgroundColor': '#fff',
-                'pointHoverBorderColor': 'rgb(255, 99, 132)'
-            }, {
-                'label': 'Today',
-                'data': [28, 48, 40, 19, 96, 27, 100],
-                'fill': True,
-                'backgroundColor': 'rgba(54, 162, 235, 0.2)',
-                'borderColor': 'rgb(54, 162, 235)',
-                'pointBackgroundColor': 'rgb(54, 162, 235)',
-                'pointBorderColor': '#fff',
-                'pointHoverBackgroundColor': '#fff',
-                'pointHoverBorderColor': 'rgb(54, 162, 235)'
-            }]
-        }
+    frequencies_lbls['weekly'] = [f'Week {i}' for i in len(kb_resps[0]['value'])] # assuming they all have the same length
 
-    elif plot_type == 'scatter':
-        response = {
-            'datasets': [{
-                'label': f'{kpi_name}',
-                'data': [{'x': -10,'y': 0}, {'x': 0,'y': 10 }, {'x': 10,'y': 5},{'x': 0.5, 'y': 5.5
-                }],
-                'backgroundColor': 'rgb(255, 99, 132)'
-            }],
-        }
-        
+    labels = []
+    datasets = []
+    if plot_type == 'radar':
+        for kb_resp in kb_resps:
+            labels.append(kb_resp['name'])
+        for i in len(kb_resps[0]['value']): # assuming they all have the same length
+            dataset = {}
+            dataset['label'] = frequencies_lbls[frequency][(i+start_freq)%len(frequencies_lbls[frequency])]
+            dataset['data'] = [kb_resp['value'][i] for kb_resp in kb_resps]
+            dataset['fill'] = True
+            dataset['backgroundColor'] = colors[i%len(colors)]
+            dataset['pointBackgroundColor'] = colors[i%len(colors)]
+            dataset['pointBorderColor'] = '#fff'
+            dataset['pointHoverBackgroundColor'] = '#fff'
+            dataset['pointHoverBorderColor'] = colors[i%len(colors)]
+            datasets.append(dataset)
+    else:
+        for i in len(kb_resps[0]['value']): # assuming they all have the same length
+            labels.append(frequencies_lbls[frequency][(i+start_freq)%len(frequencies_lbls[frequency])])
+        for i, kb_resp in enumerate(kb_resps):
+            dataset = {}
+            if plot_type == 'line':
+                dataset['label'] = kb_resp['name']
+                dataset['data'] = kb_resp['value']
+                dataset['fill'] = False
+                dataset['borderColor'] = colors[i%len(colors)]
+                dataset['tension'] = 0.1
+            elif plot_type == 'bar':
+                dataset['label'] = kb_resp['name']
+                dataset['data'] = kb_resp['value']
+                dataset['backgroundColor'] = colors[i%len(colors)]
+                dataset['borderWidth'] = 1
+            datasets.append(dataset)
+        # scatter? pie? maybe hist...
+
+    response = {
+        'labels': labels,
+        'datasets': datasets
+    }
 
     return response
