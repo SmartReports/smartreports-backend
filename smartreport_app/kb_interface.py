@@ -1,10 +1,11 @@
+from .sync_db_kb import get_kpi_value
 
 def kb_interface(params):
     plot_type = params['chart_type']
-    kpi_list = params['kpi_list'] # id of the kpi in the kb
+    kpi_list = params['kpi_KB_uid_list'] # id of the kpi in the kb
     start_time = params['start_time']
     end_time = params['end_time']
-    frequency = params['frequency']
+    frequency = params['kpi_frequency_list']
 
     colors = [
         'rgb(0.4, 0.7607843137254902, 0.6470588235294118)',
@@ -54,18 +55,18 @@ def kb_interface(params):
 
 
     kb_resps = []
-    for i, kpi_id in enumerate(kpi_list):
-        kn_resp = get_kpi(kpi_id, start_time, end_time, frequency) # call to group 1 api
+    for i, kpi_uid in enumerate(kpi_list):
+        kn_resp = get_kpi_value(kpi_uid, start_time, end_time ) # call to group 1 api
         kb_resps.append(kn_resp)
 
-    frequencies_lbls['weekly'] = [f'Week {i}' for i in len(kb_resps[0]['value'])] # assuming they all have the same length
+    frequencies_lbls['weekly'] = [f'Week {i}' for i in range(len(kb_resps[0]['value']))] # assuming they all have the same length
 
     labels = []
     datasets = []
     if plot_type == 'radar':
         for kb_resp in kb_resps:
             labels.append(kb_resp['name'])
-        for i in len(kb_resps[0]['value']): # assuming they all have the same length
+        for i in range(len(kb_resps[0]['value'])): # assuming they all have the same length
             dataset = {}
             dataset['label'] = frequencies_lbls[frequency][(i+start_freq)%len(frequencies_lbls[frequency])]
             dataset['data'] = [kb_resp['value'][i] for kb_resp in kb_resps]
@@ -77,7 +78,7 @@ def kb_interface(params):
             dataset['pointHoverBorderColor'] = colors[i%len(colors)]
             datasets.append(dataset)
     else:
-        for i in len(kb_resps[0]['value']): # assuming they all have the same length
+        for i in range(len(kb_resps[0]['value'])): # assuming they all have the same length
             labels.append(frequencies_lbls[frequency][(i+start_freq)%len(frequencies_lbls[frequency])])
         for i, kb_resp in enumerate(kb_resps):
             dataset = {}

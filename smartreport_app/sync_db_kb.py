@@ -1,5 +1,6 @@
 import requests
 from .models import Kpi
+import numpy as np
 
 
 BASE_URL = 'https://vornao.dev:8888'
@@ -9,7 +10,7 @@ PASSWORD = 'api'
 
 def sync_kpi_lits():
 
-    url = BASE_URL+'/kpis/'
+    url = BASE_URL+'/kpis'
 
     print(f"start sync_kpi_lits, URL={url}")
 
@@ -54,9 +55,21 @@ def sync_kpi_lits():
             print(f"KPI {kpi['uid']} created")
 
 
-def get_kpi_value(kpi_uid):
-    kpi_value = requests.get(f'{BASE_URL}/kpi/{kpi_uid}', auth=(USERNAME, PASSWORD))
-    return kpi_value.json()['data']['value']
+def get_kpi_value(kpi_uid, start_time=0, end_time=0):
+    # kpi_value = requests.get(f'{BASE_URL}/kpi/{kpi_uid}', auth=(USERNAME, PASSWORD))
+    # return kpi_value.json()['data']
+    
+    # TODO random values for a weekly kpi
+    kpi_value = {
+        'data' : {
+            'name' : kpi_uid,
+            'value' : np.random.rand(7)
+        }
+    }
+
+    return kpi_value['data']
+    
+    
     
 if __name__ == '__main__':
     sync_kpi_lits()
