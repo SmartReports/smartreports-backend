@@ -1,4 +1,5 @@
 from .sync_db_kb import get_kpi_value
+import numpy as np
 
 def kb_interface(params):
     plot_type = params['chart_type']
@@ -6,6 +7,16 @@ def kb_interface(params):
     start_time = params['start_time']
     end_time = params['end_time']
     frequency = params['kpi_frequency_list']
+
+    if plot_type == 'semaphore':
+        resp = get_kpi_value(kpi_list[0]) # is only one
+        value = resp['value'][-1]
+        response = {
+            'value': value,  # should be only only one or take the last one
+            'color' : np.random.choice(['red', 'orange', 'green'])
+        }
+        return response
+
 
     colors = [
         'rgb(0.4, 0.7607843137254902, 0.6470588235294118)',
