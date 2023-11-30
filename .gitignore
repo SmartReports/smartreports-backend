@@ -1,3 +1,5 @@
+smartreport_app/migrations
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -164,3 +166,9 @@ node_modules
 # Static files
 staticfiles_build
 .vercel
+
+# local bak
+*.bak
+
+# sync script
+sync_db.sh

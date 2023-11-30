@@ -6,10 +6,7 @@ from .models import (
     ReportTemplateImage,
     KpiReportElement,
     Alarm,
-    DashboardLayout,
-    SmartReportTemplate,
-    Email,
-    ArchivedReport,
+    DashboardLayout
 )
 
 
@@ -24,7 +21,6 @@ class ReportTemplatePageInline(admin.TabularInline):
     show_change_link = True
     inlines = [KpiReportElementInline]
 
-
 @admin.register(Kpi)
 class KpiAdmin(admin.ModelAdmin):
     list_display = ("kb_name",)
@@ -33,14 +29,8 @@ class KpiAdmin(admin.ModelAdmin):
 
 @admin.register(ReportTemplate)
 class ReportTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "frequency", "smart")
-    list_filter = ("frequency", "smart",)
-    inlines = [ReportTemplatePageInline]
-
-@admin.register(SmartReportTemplate)
-class SmartReportTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "frequency", "smart")
-    list_filter = ("frequency", "smart",)
+    list_display = ("id", "name", "frequency")
+    list_filter = ("frequency",)
     inlines = [ReportTemplatePageInline]
 
 
@@ -53,7 +43,7 @@ class ReportTemplatePageAdmin(admin.ModelAdmin):
 
 @admin.register(KpiReportElement)
 class KpiReportElementAdmin(admin.ModelAdmin):
-    list_display = ("report_page", "chart_type")
+    list_display = ("report_page", "kpis", "chart_type")
     list_filter = ("chart_type",)
 
 
@@ -79,16 +69,3 @@ class ReportTemplateImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_type', 'report_id', 'img')
     list_filter = ('report_id', 'user_type')
     search_fields = ('report_id', 'user_type')
-
-@admin.register(Email)
-class EmailAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_type', 'emails')
-    list_filter = ('user_type', )
-    search_fields = ('user_type', )
-
-@admin.register(ArchivedReport)
-class ArchivedReportAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_type', 'created', 'sent')
-    list_filter = ('user_type', )
-    search_fields = ('user_type', )
-    ordering = ('created',)

@@ -25,7 +25,7 @@ os.environ.setdefault(
     "SECRET_KEY", "django-insecure-uji3*2a6x#!jcvjy9ogvgoo5h6jb=$au1w)1*u1yk!6$+z#obj"
 )
 
-DEBUG = os.environ.get("DEBUG").lower() == "true"
+DEBUG = not os.environ.get("DEBUG").lower() == "false"
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = [
@@ -156,10 +156,10 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
-# if (os.environ.get("DEBUG").lower() == "false"):
-#     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
-#         'smartreport_app.permissions.FullObjectPermission',
-#     )
+if (os.environ.get("DEBUG").lower() == "false"):
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+        'smartreport_app.permissions.FullObjectPermission',
+    )
 
 
 # Internationalization
@@ -171,7 +171,7 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -185,4 +185,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-DEBUG = True
+
+DEFAULT_FROM_EMAIL = 'updates@smartreports.it'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'authsmtp.securemail.pro'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+
+DATA_UPLOAD_MAX_MEMORY_SIZE=5242880
