@@ -12,21 +12,29 @@ def kb_interface(params):
         resp = get_kpi_value(kpi_list[0]) # is only one
         value = resp['value'][-1]
         response = {
-            'value': value,  # should be only only one or take the last one
+            'value': value,  # should be only one or take the last one
             'color' : np.random.choice(['red', 'orange', 'green'])
         }
         return response
 
 
     colors = [
-        'rgb(0.4, 0.7607843137254902, 0.6470588235294118)',
-        'rgb(0.9882352941176471, 0.5529411764705883, 0.3843137254901961)',
-        'rgb(0.5529411764705883, 0.6274509803921569, 0.796078431372549)',
-        'rgb(0.9058823529411765, 0.5411764705882353, 0.7647058823529411)',
-        'rgb(0.6509803921568628, 0.8470588235294118, 0.32941176470588235)',
-        'rgb(1.0, 0.8509803921568627, 0.1843137254901961)',
-        'rgb(0.8980392156862745, 0.7686274509803922, 0.5803921568627451)',
-        'rgb(0.7019607843137254, 0.7019607843137254, 0.7019607843137254)'
+        'rgb(54, 162, 235)',
+        'rgb(255, 98, 132)',
+        'rgb(75, 193, 193)',
+        'rgb(255, 159, 64)',
+        'rgb(154, 102, 255)',
+        'rgb(255, 205, 86)',
+        'rgb(201, 203, 208)'
+    ]
+    transp_colors = [
+        'rgb(54, 162, 235, 0.2)',
+        'rgb(255, 98, 132, 0.2)',
+        'rgb(75, 193, 193, 0.2)',
+        'rgb(255, 159, 64, 0.2)',
+        'rgb(154, 102, 255, 0.2)',
+        'rgb(255, 205, 86, 0.2)',
+        'rgb(201, 203, 208, 0.2)'
     ]
     frequencies_lbls = {
         'monthly': [
@@ -43,7 +51,7 @@ def kb_interface(params):
             'November',
             'December'
         ],
-        'hourly': [str(i) for i in range(24)],
+        'hourly': [str(i)+':00' for i in range(24)],
         'daily': [
             'Monday',
             'Tuesday',
@@ -82,7 +90,8 @@ def kb_interface(params):
             dataset['label'] = frequencies_lbls[frequency][(i+start_freq)%len(frequencies_lbls[frequency])]
             dataset['data'] = [kb_resp['value'][i] for kb_resp in kb_resps]
             dataset['fill'] = True
-            dataset['backgroundColor'] = colors[i%len(colors)]
+            dataset['backgroundColor'] = transp_colors[i%len(colors)]
+            dataset['borderColor'] = colors[i%len(colors)]
             dataset['pointBackgroundColor'] = colors[i%len(colors)]
             dataset['pointBorderColor'] = '#fff'
             dataset['pointHoverBackgroundColor'] = '#fff'
@@ -102,10 +111,14 @@ def kb_interface(params):
             elif plot_type == 'bar':
                 dataset['label'] = kb_resp['name']
                 dataset['data'] = kb_resp['value']
+                dataset['borderColor'] = colors[i%len(colors)]
                 dataset['backgroundColor'] = colors[i%len(colors)]
                 dataset['borderWidth'] = 1
+            elif plot_type == 'pie' or plot_type == 'doughnut':
+                dataset['label'] = kb_resp['name']
+                dataset['data'] = kb_resp['value']
+                dataset['backgroundColor'] = colors
             datasets.append(dataset)
-        # scatter? pie? maybe hist...
 
     response = {
         'labels': labels,
