@@ -133,12 +133,17 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         for kpi in Kpi.objects.filter(id__in=list_of_internal_ids):
             if not params["chart_type"] in kpi.allowed_charts:
                 return Response({"message": f"Kpi {kpi.pk} does not support {params['chart_type']} plot"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            
+        if params["chart_type"] == "semaphore" and len(list_of_KB_uids) > 1:
+            return Response({"message": "The semaphore plot only supports one kpi"}, status=status.HTTP_400_BAD_REQUEST)
+          
+    
         # TODO implement start and end time
+        # TODO for now frequency is only weekly
         kb_interface_params = {
             'chart_type' : params['chart_type'],
             'kpi_KB_uid_list' : list_of_KB_uids,
-            'kpi_frequency_list' : [kpi.kb_frequency in queryset],
+            'kpi_frequency_list' : 'weekly',
             'start_time' : 'boh',
             'end_time' : 'boh', 
         }
