@@ -1,5 +1,5 @@
 import json
-from generatePage import GeneratePage
+from .generatePage import GeneratePage
 from pprint import pprint
 from pathlib import Path
 from PIL import Image

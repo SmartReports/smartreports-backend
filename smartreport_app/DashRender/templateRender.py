@@ -5,7 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from generateReport import GenerateReport
+from .generateReport import GenerateReport
 import base64
 from pathlib import Path
 

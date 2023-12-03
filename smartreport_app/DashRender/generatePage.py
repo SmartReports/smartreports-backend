@@ -1,4 +1,4 @@
-from generatePlot import GeneratePlot
+from .generatePlot import GeneratePlot
 from plotly.subplots import make_subplots
 
 class GeneratePage:
