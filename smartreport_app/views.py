@@ -177,7 +177,7 @@ class SendReportEmailsViewSet(viewsets.GenericViewSet):
         super().__init__(**kwargs)
     
     def list(self, request):
-        TemplateRender(api_base='http://127.0.0.1:8000/')
+        # TemplateRender(api_base='http://127.0.0.1:8000/')
         send_emails_for_unsent_reports()
         return Response({"message": "Sending emails"})
 
