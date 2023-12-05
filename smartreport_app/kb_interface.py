@@ -1,5 +1,6 @@
 from .sync_db_kb import get_kpi_value
-import numpy as np
+import random
+
 
 def kb_interface(params):
     plot_type = params['chart_type']
@@ -13,7 +14,15 @@ def kb_interface(params):
         value = resp['value'][-1]
         response = {
             'value': value,  # should be only one or take the last one
-            'color' : np.random.choice(['red', 'orange', 'green'])
+            'color' : random.choice(['red', 'orange', 'green'])
+        }
+        return response
+    
+    if plot_type == 'value':
+        resp = get_kpi_value(kpi_list[0]) # is only one
+        value = resp['value'][-1]
+        response = {
+            'value': value,  # should be only one or take the last one
         }
         return response
 
