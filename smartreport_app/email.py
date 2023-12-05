@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from .models import UserType, ArchivedReport, Email, Alarm
 from .sync_db_kb import get_kpi_value
 from base64 import b64decode
+from django.template.loader import render_to_string
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -31,7 +32,7 @@ def send_emails_for_unsent_reports():
                     # Iterate over each Email instance
                     for email_address in email_instance.emails:
                         # Create an EmailMessage object
-                        subject = 'Subject of your email'
+                        subject = 'Your SmartReport'
                         message = f'Dear {report.template.user_type},\nThis is your {report.template.frequency} report.'
 
                         email = EmailMessage(
@@ -46,11 +47,15 @@ def send_emails_for_unsent_reports():
                         file_content = report.file
                         file_content = b64decode(file_content, validate=True)
 
+                        if not report.file_name.endswith('.pdf'):
+                            report.file_name = report.file_name + '.pdf'
+
                         # Attach the file to the email
                         email.attach(report.file_name, file_content, 'application/octet-stream')
-
+                        
+                        print(f'sending mail for {report.file_name} to {email_address}')
                         # Send the email
-                        email.send()
+                        print(f'Success: {email.send()== 1}')
 
                     # Update the sent status of the ArchivedReport
                     report.sent = True
@@ -72,13 +77,17 @@ def send_emails_for_alarms():
         
         if alarm.kpi.kb_uid != current_kpi_uid: # update for the new kpi 
             current_kpi_uid = alarm.kpi.kb_uid
-            current_kpi_value = get_kpi_value(current_kpi_uid)
+            current_kpi_value = get_kpi_value(current_kpi_uid)['value'][-1]
     
 
         if current_kpi_value <= alarm.min_value or current_kpi_value >= alarm.max_value:
             # Create an EmailMessage object
             subject = 'SmartReports Alarm Notification'
-            message = f'Dear {alarm.user_type},\nThe value of {alarm.kpi.kb_name} is {current_kpi_value}.'
+            message = f'Dear {alarm.user_type},\nThe value of {alarm.kpi.kb_name} is {current_kpi_value}.\n'
+
+            with open(f'smartreport_app/email_body.html', 'r') as f:
+                message += f.read()
+
             
             for email_address in Email.objects.get(user_type=alarm.user_type).emails:
                 email = EmailMessage(
@@ -88,6 +97,7 @@ def send_emails_for_alarms():
                     to = [email_address],
                     reply_to = [settings.DEFAULT_FROM_EMAIL],
                 )
+                email.content_subtype = 'html'
                 
                 print(f'sending mail for {current_kpi_uid} to {email_address}')
                 # Send the email
