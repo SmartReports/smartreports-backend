@@ -5,6 +5,7 @@ from .models import UserType, ArchivedReport, Email, Alarm
 from .sync_db_kb import get_kpi_value
 from base64 import b64decode
 from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -103,3 +104,65 @@ def send_emails_for_alarms():
                 # Send the email
                 print(f'Success: {email.send()== 1}')
 
+# def mail_final_presentation():
+#     subject = 'SmartReports Final Presentation'
+#     message = f'Dear Sandra,\nThere is a problem with the wearable device.\n'
+
+#     # with open(f'smartreport_app/yellow_semaphore.html', 'r') as f:
+#     #     message += f.read()
+
+#     # email = EmailMessage(
+#     #     subject = subject,
+#     #     body = message,
+#     #     from_email = settings.DEFAULT_FROM_EMAIL,
+#     #     to = ['matteotolloso@gmail.com'],
+#     #     reply_to = [settings.DEFAULT_FROM_EMAIL],
+#     # )
+#     # email.content_subtype = 'html'
+
+    
+#     html_message = "<p>text<p> <img src='/home/matteo/smartreports-backend/smartreport_app/semaforo-2.png'/>" # Object URL is link to AWS S3 image like https://demo.s3.amazonaws.com/test.png
+#     from_email = settings.DEFAULT_FROM_EMAIL
+#     recipients_list = ["matteotolloso@gmail.com"]
+#     send_mail(subject, message, from_email, recipients_list, fail_silently=False, html_message=html_message)
+        
+#     # Send the email
+#     # print(f'Success: {email.send()== 1}')
+
+def mail_final_presentation():
+    from email.mime.image import MIMEImage
+    from django.core.mail import EmailMultiAlternatives
+
+
+    subject = 'DataX alarm notification'
+    body_html = '''
+            <html>
+                <body>
+                    <p>Dear Sandra,</p>
+                    <p>There is a problem with the wearable device.</p>
+                    <img src="cid:yellow.png" width="300" />
+                </body>
+            </html>
+            '''
+
+    from_email = settings.DEFAULT_FROM_EMAIL
+
+    msg = EmailMultiAlternatives(
+        subject,
+        body_html,
+        from_email=from_email,
+        # to=['matteotolloso@gmail.com', 'f.biondi12@studenti.unipi.it'],
+        # to=['f.biondi12@studenti.unipi.it'],
+        to=['m.tolloso@studenti.unipi.it']
+
+    )
+
+    msg.mixed_subtype = 'related'
+    msg.attach_alternative(body_html, "text/html")
+    image = 'yellow.png'
+    with open('/home/matteo/smartreports-backend/smartreport_app/yellow.png', 'rb') as f:
+        img = MIMEImage(f.read())
+        img.add_header('Content-ID', '<{name}>'.format(name=image))
+        img.add_header('Content-Disposition', 'inline', filename=image)
+    msg.attach(img)
+    print(msg.send(fail_silently=False))
