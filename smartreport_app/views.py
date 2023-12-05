@@ -3,7 +3,6 @@ from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
 from .email import send_emails_for_unsent_reports, send_emails_for_alarms
-from .DashRender.templateRender import TemplateRender
 
 from .models import (
     KpiReportElement,
