@@ -13,7 +13,7 @@ def kb_interface(params):
         resp = get_kpi_value(kpi_list[0]) # is only one
         value = resp['value'][-1]
         response = {
-            'value': value,  # should be only one or take the last one
+            'value': int(value * 100) ,  # should be only one or take the last one
             'color' : random.choice(['red', 'orange', 'green'])
         }
         return response
@@ -22,7 +22,7 @@ def kb_interface(params):
         resp = get_kpi_value(kpi_list[0]) # is only one
         value = resp['value'][-1]
         response = {
-            'value': value,  # should be only one or take the last one
+            'value': int(value * 100),  # should be only one or take the last one
         }
         return response
 
