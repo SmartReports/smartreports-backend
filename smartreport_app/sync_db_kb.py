@@ -1,6 +1,6 @@
 import requests
 from .models import Kpi
-import numpy as np
+import random
 
 
 BASE_URL = 'https://vornao.dev:8888'
@@ -63,7 +63,7 @@ def get_kpi_value(kpi_uid, start_time=0, end_time=0):
     kpi_value = {
         'data' : {
             'name' : kpi_uid,
-            'value' : np.random.rand(7)
+            'value' : [random.random() for _ in range(7)]
         }
     }
 

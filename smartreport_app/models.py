@@ -18,7 +18,8 @@ CHART_CHOICES = (
     "pie",
     "doughnut",
     "radar",
-    "semaphore"
+    "semaphore", 
+    "value",
 )
 def DEFAULT_CHART_CHOICES():
     return [*CHART_CHOICES]

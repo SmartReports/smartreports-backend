@@ -135,8 +135,8 @@ class KpiDataViewSet(viewsets.GenericViewSet):
             if not params["chart_type"] in kpi.allowed_charts:
                 return Response({"message": f"Kpi {kpi.pk} does not support {params['chart_type']} plot"}, status=status.HTTP_400_BAD_REQUEST)
             
-        if params["chart_type"] == "semaphore" and len(list_of_KB_uids) > 1:
-            return Response({"message": "The semaphore plot only supports one kpi"}, status=status.HTTP_400_BAD_REQUEST)
+        if params["chart_type"] in ["semaphore", "value"] and len(list_of_KB_uids) > 1:
+            return Response({"message": "This plot only supports one kpi"}, status=status.HTTP_400_BAD_REQUEST)
           
     
         # TODO implement start and end time
