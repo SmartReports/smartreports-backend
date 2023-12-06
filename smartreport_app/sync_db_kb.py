@@ -3,7 +3,7 @@ from .models import Kpi
 import random
 
 
-BASE_URL = 'https://vornao.dev:8888'
+BASE_URL = 'https://industrial-smartapp-api.onrender.com'
 USERNAME = 'smartapp'
 PASSWORD = 'api'
 
