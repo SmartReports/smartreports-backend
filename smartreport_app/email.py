@@ -134,12 +134,14 @@ def mail_final_presentation():
     from django.core.mail import EmailMultiAlternatives
 
 
-    subject = 'DataX alarm notification'
+    subject = 'Reporting on wearable device'
     body_html = '''
             <html>
                 <body>
                     <p>Dear Sandra,</p>
-                    <p>There is a problem with the wearable device.</p>
+                    <p>We regret to inform you that there seems to be an issue with the wearable device n°1234. </p>
+                    <p>We encourage you to contact the doctor and to check the functioning of the device through your dashboard or the virtual assistant. </p>
+                    <p>Kind regards,<br>The Smartreports team</p>
                     <img src="cid:yellow.png" width="300" />
                 </body>
             </html>
@@ -151,9 +153,9 @@ def mail_final_presentation():
         subject,
         body_html,
         from_email=from_email,
-        # to=['matteotolloso@gmail.com', 'f.biondi12@studenti.unipi.it'],
+        to=['matteotolloso@gmail.com', 'f.biondi12@studenti.unipi.it'],
         # to=['f.biondi12@studenti.unipi.it'],
-        to=['m.tolloso@studenti.unipi.it']
+        # to=['p.magos@studenti.unipi.it']
 
     )
 
