@@ -14,7 +14,9 @@ def kb_interface(params):
         value = resp['value'][-1]
         response = {
             'value': int(value * 100) ,  # should be only one or take the last one
-            'color' : random.choice(['red', 'yellow', 'green'])
+            # 'color' : random.choice(['red', 'yellow', 'green'])
+            'color' : random.choice(['yellow'])
+
         }
         return response
     
