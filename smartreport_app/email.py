@@ -5,6 +5,7 @@ from .models import UserType, ArchivedReport, Email, Alarm
 from .sync_db_kb import get_kpi_value
 from base64 import b64decode
 from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 def send_emails_for_unsent_reports():
     # Get distinct user types from UserType enumeration
@@ -103,3 +104,43 @@ def send_emails_for_alarms():
                 # Send the email
                 print(f'Success: {email.send()== 1}')
 
+
+def mail_final_presentation():
+    from email.mime.image import MIMEImage
+    from django.core.mail import EmailMultiAlternatives
+
+
+    subject = 'Reporting on wearable device'
+    body_html = '''
+            <html>
+                <body>
+                    <p>Dear Sandra,</p>
+                    <p>We regret to inform you that there seems to be an issue with the wearable device n°1234. </p>
+                    <p>We encourage you to contact the doctor and to check the functioning of the device through your dashboard or the virtual assistant. </p>
+                    <p>Kind regards,<br>The Smartreports team</p>
+                    <img src="cid:yellow.png" width="300" />
+                </body>
+            </html>
+            '''
+
+    from_email = settings.DEFAULT_FROM_EMAIL
+
+    msg = EmailMultiAlternatives(
+        subject,
+        body_html,
+        from_email=from_email,
+        to=['matteotolloso@gmail.com', 'f.biondi12@studenti.unipi.it'],
+        # to=['f.biondi12@studenti.unipi.it'],
+        # to=['p.magos@studenti.unipi.it']
+
+    )
+
+    msg.mixed_subtype = 'related'
+    msg.attach_alternative(body_html, "text/html")
+    image = 'yellow.png'
+    with open('/home/matteo/smartreports-backend/smartreport_app/yellow.png', 'rb') as f:
+        img = MIMEImage(f.read())
+        img.add_header('Content-ID', '<{name}>'.format(name=image))
+        img.add_header('Content-Disposition', 'inline', filename=image)
+    msg.attach(img)
+    print(msg.send(fail_silently=False))

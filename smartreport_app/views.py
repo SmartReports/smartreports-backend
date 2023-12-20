@@ -2,7 +2,7 @@ import os
 from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
-from .email import send_emails_for_unsent_reports, send_emails_for_alarms
+from .email import send_emails_for_unsent_reports, send_emails_for_alarms, mail_final_presentation
 
 from .models import (
     KpiReportElement,
@@ -187,5 +187,6 @@ class SendAlarmEmailsViewSet(viewsets.GenericViewSet):
         super().__init__(**kwargs)
     
     def list(self, request):
-        send_emails_for_alarms()
+        mail_final_presentation()
+        # send_emails_for_alarms()
         return Response({"message": "Sending emails"})
