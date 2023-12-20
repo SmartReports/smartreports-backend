@@ -104,30 +104,6 @@ def send_emails_for_alarms():
                 # Send the email
                 print(f'Success: {email.send()== 1}')
 
-# def mail_final_presentation():
-#     subject = 'SmartReports Final Presentation'
-#     message = f'Dear Sandra,\nThere is a problem with the wearable device.\n'
-
-#     # with open(f'smartreport_app/yellow_semaphore.html', 'r') as f:
-#     #     message += f.read()
-
-#     # email = EmailMessage(
-#     #     subject = subject,
-#     #     body = message,
-#     #     from_email = settings.DEFAULT_FROM_EMAIL,
-#     #     to = ['matteotolloso@gmail.com'],
-#     #     reply_to = [settings.DEFAULT_FROM_EMAIL],
-#     # )
-#     # email.content_subtype = 'html'
-
-    
-#     html_message = "<p>text<p> <img src='/home/matteo/smartreports-backend/smartreport_app/semaforo-2.png'/>" # Object URL is link to AWS S3 image like https://demo.s3.amazonaws.com/test.png
-#     from_email = settings.DEFAULT_FROM_EMAIL
-#     recipients_list = ["matteotolloso@gmail.com"]
-#     send_mail(subject, message, from_email, recipients_list, fail_silently=False, html_message=html_message)
-        
-#     # Send the email
-#     # print(f'Success: {email.send()== 1}')
 
 def mail_final_presentation():
     from email.mime.image import MIMEImage
