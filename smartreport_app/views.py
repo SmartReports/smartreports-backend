@@ -2,7 +2,7 @@ import os
 from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
-from .email import send_emails_for_unsent_reports, send_emails_for_alarms
+from .email import send_emails_for_unsent_reports, send_emails_for_alarms, mail_final_presentation
 
 from .models import (
     KpiReportElement,
@@ -112,7 +112,7 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         super().__init__(**kwargs)
 
     def list(self, request):
-        params = request.query_params
+        params = request.query_params.copy()
 
         if 'kpis' not in params or params.getlist("kpis") == []:
             return Response({"message": "The required parameter 'kpis' is missing"}, status=status.HTTP_400_BAD_REQUEST)
@@ -127,6 +127,10 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         if 'chart_type' not in params:
             return Response({"message": "The required parameter 'chart_type' is missing"}, status=status.HTTP_400_BAD_REQUEST)
         
+        # TODO remove after testing
+        if params["chart_type"] == 'line':
+            params['predict'] = True
+        
         if list_of_KB_uids == []:
             return Response({"message": "No kpis found"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -136,8 +140,10 @@ class KpiDataViewSet(viewsets.GenericViewSet):
             
         if params["chart_type"] in ["semaphore", "value"] and len(list_of_KB_uids) > 1:
             return Response({"message": "This plot only supports one kpi"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'predict' in params and params["predict"] == "true" and params['chart_type'] != 'line':
+            return Response({"message": "This plot does not support prediction"}, status=status.HTTP_400_BAD_REQUEST) 
           
-    
         # TODO implement start and end time
         # TODO for now frequency is only weekly
         kb_interface_params = {
@@ -146,6 +152,7 @@ class KpiDataViewSet(viewsets.GenericViewSet):
             'kpi_frequency_list' : 'weekly',
             'start_time' : 'boh',
             'end_time' : 'boh', 
+            'predict' : params['predict'] if 'predict' in params else False,
         }
         
         data = kb_interface(params = kb_interface_params)
@@ -187,5 +194,6 @@ class SendAlarmEmailsViewSet(viewsets.GenericViewSet):
         super().__init__(**kwargs)
     
     def list(self, request):
-        send_emails_for_alarms()
+        mail_final_presentation()
+        # send_emails_for_alarms()
         return Response({"message": "Sending emails"})
