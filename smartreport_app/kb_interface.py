@@ -8,6 +8,7 @@ def kb_interface(params):
     start_time = params['start_time']
     end_time = params['end_time']
     frequency = params['kpi_frequency_list']
+    predict = params['predict']
 
     if plot_type == 'semaphore':
         resp = get_kpi_value(kpi_list[0]) # is only one
@@ -35,12 +36,11 @@ def kb_interface(params):
         'rgb(75, 193, 193)',
         'rgb(255, 159, 64)',
         'rgb(154, 102, 255)',
-        'rgb(255, 205, 86)',
-        'rgb(201, 203, 208)'
+        'rgb(255, 205, 86)'
     ]
     transp_colors = [color[:-1]+', 0.2)' for color in colors]
     frequencies_lbls = {
-        'monthly': [
+        'annual': [
             'January',
             'February',
             'March',
@@ -54,8 +54,8 @@ def kb_interface(params):
             'November',
             'December'
         ],
-        'hourly': [str(i)+':00' for i in range(24)],
-        'daily': [
+        'daily': [str(i)+':00' for i in range(24)],
+        'weekly': [
             'Monday',
             'Tuesday',
             'Wednesday',
@@ -66,14 +66,16 @@ def kb_interface(params):
         ]
     }
 
-    if frequency == 'monthly':
-        start_freq = start_time.month # int in [0,11]
-    elif frequency == 'daily':
-        start_freq = start_time.day # int in [0,6]
-    elif frequency == 'hourly':
-        start_freq = start_time.hour # int in [0,11]
-    elif frequency == 'weekly':
-        start_freq = 0
+    # if frequency == 'monthly':
+        # start_freq = start_time.month # int in [0,11]
+    # elif frequency == 'daily':
+        # start_freq = start_time.day # int in [0,6]
+    # elif frequency == 'hourly':
+        # start_freq = start_time.hour # int in [0,11]
+    # elif frequency == 'weekly':
+        # start_freq = 0
+    
+    start_freq = 0
 
 
     kb_resps = []
@@ -81,7 +83,19 @@ def kb_interface(params):
         kn_resp = get_kpi_value(kpi_uid, start_time, end_time) # call to group 1 api
         kb_resps.append(kn_resp)
 
-    frequencies_lbls['weekly'] = [f'Week {i}' for i in range(len(kb_resps[0]['value']))] # assuming they all have the same length
+
+    if predict:
+        for key, value in frequencies_lbls.items():
+            value.append(['Monday' ,'Prediction'])  # TODO start after the current date
+            value.append(['Tuesday' ,'Prediction'])
+
+        
+        for kb_resp in kb_resps:
+            kb_resp['value'].append(random.random()) # TODO actual prediction
+            kb_resp['value'].append(random.random()) 
+
+            
+
 
     labels = []
     datasets = []
@@ -95,7 +109,31 @@ def kb_interface(params):
             dataset['fill'] = False
             dataset['borderColor'] = colors[i%len(colors)]
             dataset['backgroundColor'] = transp_colors[i%len(colors)]
-            dataset['tension'] = 0.1
+            dataset['tension'] = 0
+            if predict:
+                dashed_dataset = {}
+                dashed_dataset['fill'] = False
+                dashed_dataset['borderColor'] = colors[i%len(colors)]
+                dashed_dataset['backgroundColor'] = transp_colors[i%len(colors)]
+                dashed_dataset['tension'] = 0.8
+                dashed_dataset['label'] = kb_resp['name'] + ' ' +'Prediction'
+                dashed_dataset['data'] = []
+
+                # put to None all the values of the dashed dataset except the last two
+                for i, val in enumerate(dataset['data']):
+                    if i == len(dataset['data'])-1 or i == len(dataset['data'])-2 or i == len(dataset['data'])-3:
+                        dashed_dataset['data'].append(val)
+                    else:
+                        dashed_dataset['data'].append(None)
+
+                # remove the last two value from the original dataset
+                dataset['data'][-1] = None
+                dataset['data'][-2] = None
+              
+                dashed_dataset['borderDash'] = [1, 1]
+
+                datasets.append(dashed_dataset)
+
         elif plot_type == 'bar':
             dataset['borderColor'] = colors[i%len(colors)]
             dataset['backgroundColor'] = colors[i%len(colors)]
@@ -108,6 +146,8 @@ def kb_interface(params):
             dataset['backgroundColor'] = colors
         datasets.append(dataset)
 
+    datasets.reverse()
+    
     response = {
         'labels': labels,
         'datasets': datasets
