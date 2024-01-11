@@ -1,5 +1,9 @@
 import json
 import random
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from PIL import Image
+from reportlab.pdfgen import canvas
 
 class ChartJSGraph:
     def __init__(self):
@@ -41,6 +45,42 @@ class ChartJSGraph:
         with open(filename + ".html", "w") as html_file:
             html_file.write(self.get_html_template(x_label, y_label, title, page_layout))
 
+        # Read HTML content
+        html_content = open(filename + ".html", 'r', encoding='utf-8').read()
+
+        chrome_options = Options()
+        chrome_options.add_argument("--headless") 
+        chrome_options.add_argument(f"--window-size={816*2},{1056*2}")
+
+        # Create a WebDriver instance using the installed ChromeDriver
+        driver = webdriver.Chrome(options=chrome_options)
+
+        try:
+            # Open the HTML file in the WebDriver
+            driver.get("file://" + 'path_to_the_file'+ filename + ".html")
+
+            # Capture screenshot
+            driver.save_screenshot(filename + ".png")
+
+        finally:
+            # Close the WebDriver
+            driver.quit()
+        
+        # Open the PNG image
+        img = Image.open(filename + ".png")
+
+        # Create a PDF file
+        with open(filename + ".pdf", 'wb') as pdf_file:
+            # Create a PDF canvas
+            pdf_canvas = canvas.Canvas(pdf_file, pagesize=img.size)
+
+            # Draw the PNG image on the PDF canvas
+            pdf_canvas.drawInlineImage(filename + ".png", 0, 0, width=img.width, height=img.height)
+
+            # Save the PDF file
+            pdf_canvas.save()
+
+
     def get_html_template(self, x_label, y_label, title, page_layout):
         return f"""
         <!DOCTYPE html>
@@ -80,9 +120,9 @@ class ChartJSGraph:
 
     def get_num_charts(self, page_layout):
         if page_layout == "horizontal" or page_layout == "vertical":
-            return 12
+            return 4
         elif page_layout == "grid":
-            return 12
+            return 6
         else:
             raise ValueError("Invalid page layout")
 
@@ -110,13 +150,13 @@ x_values = [1, 2, 3, 4, 5]
 y_values = [[2, 4, 6, 8, 10], [1, 4, 9, 16, 25]]
 x_label = "X-axis"
 y_label = "Y-axis"
-title = "My Chart.js Chart"
+title = "MyChart.js"
 
 # Create an instance of ChartJSGraph
 chart_js_graph = ChartJSGraph()
 
 # Specify the layout
-page_layout = "horizontal"
+page_layout = "grid"
 
 # Add datasets with specified colors
 chart_js_graph.add_dataset("Dataset 1", y_values[0], color="rgba(255, 0, 0, 0.4)")
