@@ -127,10 +127,6 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         if 'chart_type' not in params:
             return Response({"message": "The required parameter 'chart_type' is missing"}, status=status.HTTP_400_BAD_REQUEST)
         
-        # TODO remove after testing
-        if params["chart_type"] == 'line':
-            params['predict'] = True
-        
         if list_of_KB_uids == []:
             return Response({"message": "No kpis found"}, status=status.HTTP_400_BAD_REQUEST)
         
