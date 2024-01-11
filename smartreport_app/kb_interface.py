@@ -109,13 +109,13 @@ def kb_interface(params):
             dataset['fill'] = False
             dataset['borderColor'] = colors[i%len(colors)]
             dataset['backgroundColor'] = transp_colors[i%len(colors)]
-            dataset['tension'] = 0
+            dataset['tension'] = 0.6
             if predict:
                 dashed_dataset = {}
                 dashed_dataset['fill'] = False
                 dashed_dataset['borderColor'] = colors[i%len(colors)]
                 dashed_dataset['backgroundColor'] = transp_colors[i%len(colors)]
-                dashed_dataset['tension'] = 0.8
+                dashed_dataset['tension'] = 0
                 dashed_dataset['label'] = kb_resp['name'] + ' ' +'Prediction'
                 dashed_dataset['data'] = []
 

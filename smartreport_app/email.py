@@ -144,3 +144,17 @@ def mail_final_presentation():
         img.add_header('Content-Disposition', 'inline', filename=image)
     msg.attach(img)
     print(msg.send(fail_silently=False))
+
+
+def send_sms():
+    command = '\
+        curl -X POST \
+        -H "Authorization: Bearer 6ece5154b6e446c1a11f798da819e5ab"\
+        -H "Content-Type: application/json" -d "\
+        {\
+            "from": "447520652538",\
+            "to": [ " " ],\
+            "body": "Enter test message here"\
+        }"\
+        "https://sms.api.sinch.com/xms/v1/fe0559cd9a074aec9cd5947b64ab91c9/batches"\
+        '
