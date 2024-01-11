@@ -8,7 +8,7 @@ def kb_interface(params):
     start_time = params['start_time']
     end_time = params['end_time']
     frequency = params['kpi_frequency_list']
-    predict = params['predict']
+    predict = True if params['predict'] == 'true' else False
 
     if plot_type == 'semaphore':
         resp = get_kpi_value(kpi_list[0]) # is only one
