@@ -10,8 +10,6 @@ def kb_interface(params):
     frequency = params['kpi_frequency_list']
     predict = True if params['predict'] == 'true' else False
 
-    print(predict)
-
     if plot_type == 'semaphore':
         resp = get_kpi_value(kpi_list[0]) # is only one
         value = resp['value'][-1]
