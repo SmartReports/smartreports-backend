@@ -56,13 +56,13 @@ def kb_interface(params):
         ],
         'daily': [str(i)+':00' for i in range(24)],
         'weekly': [
-            'Monday',
-            'Tuesday',
             'Wednesday',
             'Thursday',
             'Friday',
             'Saturday',
-            'Sunday'
+            'Sunday',
+            'Monday',
+            'Tuesday',
         ]
     }
 
@@ -116,7 +116,7 @@ def kb_interface(params):
                 dashed_dataset['borderColor'] = colors[i%len(colors)]
                 dashed_dataset['backgroundColor'] = transp_colors[i%len(colors)]
                 dashed_dataset['tension'] = 0
-                dashed_dataset['label'] = kb_resp['name'] + ' ' +'Prediction'
+                dashed_dataset['label'] = kb_resp['name'] + ' ' +'[prediction]'
                 dashed_dataset['data'] = []
 
                 # put to None all the values of the dashed dataset except the last two
