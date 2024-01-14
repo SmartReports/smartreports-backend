@@ -9,6 +9,7 @@ from .models import (
     DashboardLayout,
     ArchivedReport,
     SmartReportTemplate,
+    Chat,
 )
 
 
@@ -119,3 +120,7 @@ class ArchivedReportSerializer(serializers.ModelSerializer):
         model = ArchivedReport
         fields = "__all__"
 
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = "__all__"
