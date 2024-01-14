@@ -214,3 +214,15 @@ class Email(models.Model):
     def clean(self):
         if not isinstance(self.emails, list):
             raise ValidationError("Emails must be a list")
+        
+class Chat(models.Model):
+
+    chat_id = models.IntegerField()
+    
+    user_type = models.CharField(
+        max_length=128,
+        choices=UserType.choices,
+    )
+
+    content = models.JSONField()
+    

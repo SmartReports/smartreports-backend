@@ -2,7 +2,7 @@ import os
 from typing import Any
 import django_filters
 from .sync_db_kb import sync_kpi_lits
-from .email import send_emails_for_unsent_reports, send_emails_for_alarms, mail_final_presentation
+from .email import send_emails_for_unsent_reports, send_emails_for_alarms, mail_final_presentation, send_kpi_mail
 
 from .models import (
     KpiReportElement,
@@ -14,6 +14,7 @@ from .models import (
     DashboardLayout,
     ArchivedReport,
     SmartReportTemplate,
+    Chat,
 )
 from .serializers import (
     ReportTemplatePageSerializer,
@@ -25,6 +26,7 @@ from .serializers import (
     DashboardLayoutSerializer,
     ArchivedReportSerializer,
     SmartTemplateSerializer,
+    ChatSerializer,
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -154,6 +156,25 @@ class KpiDataViewSet(viewsets.GenericViewSet):
         data = kb_interface(params = kb_interface_params)
         return Response({"data": data})
 
+class SendMailViewSet(viewsets.GenericViewSet):
+    def __init__(self, **kwargs: Any) -> None:
+        if (os.environ.get("DEBUG").lower() == "false"):
+            self.permission_classes = [IsAuthenticated]
+        super().__init__(**kwargs)
+
+    def list(self, request):
+        params = request.query_params.copy()
+
+        if 'mail' not in params:
+            return Response({"message": "The required parameter 'mail' is missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'kpi' not in params:
+            return Response({"message": "The required parameter 'kpi' is missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        ret = send_kpi_mail(params['mail'], params['kpi'])
+
+        return Response({"Mail send success?": ret})
+    
 
 class ArchivedReportViewSet(viewsets.ModelViewSet):
     queryset = ArchivedReport.objects.all()
@@ -193,3 +214,11 @@ class SendAlarmEmailsViewSet(viewsets.GenericViewSet):
         mail_final_presentation()
         # send_emails_for_alarms()
         return Response({"message": "Sending emails"})
+    
+class ChatViewSet(viewsets.ModelViewSet):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    filterset_fields = ["chat_id"]
+
+
+

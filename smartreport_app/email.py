@@ -1,7 +1,7 @@
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.forms import ValidationError
-from .models import UserType, ArchivedReport, Email, Alarm
+from .models import UserType, ArchivedReport, Email, Alarm, Kpi
 from .sync_db_kb import get_kpi_value
 from base64 import b64decode
 from django.template.loader import render_to_string
@@ -103,6 +103,30 @@ def send_emails_for_alarms():
                 print(f'sending mail for {current_kpi_uid} to {email_address}')
                 # Send the email
                 print(f'Success: {email.send()== 1}')
+
+def send_kpi_mail(address, kpi_id):
+    
+    kpi = Kpi.objects.get(id=kpi_id)
+    subject = f'SmartReports KPI Notification'
+    message = f'Dear user,\nYou requested an update about the {kpi.kb_name} from the chatbot, the current value is: {get_kpi_value(kpi.kb_uid)["value"][-1]}.\n'
+
+    print(f'DEBUG {address}')
+    print(f'DEBUG {kpi.kb_name}')
+
+    email = EmailMessage(
+        subject = subject,
+        body = message,
+        from_email = settings.DEFAULT_FROM_EMAIL,
+        to = [address],
+        reply_to = [settings.DEFAULT_FROM_EMAIL],
+    )
+    email.content_subtype = 'html'
+    
+    print(f'sending mail for {kpi.kb_uid} to {address}')
+    # Send the email
+    print(f'Success: {email.send()== 1}')
+
+    return email.send() == 1  # Return True if the email was sent successfully, False otherwise.
 
 
 def mail_final_presentation():

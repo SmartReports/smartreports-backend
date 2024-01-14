@@ -17,6 +17,8 @@ router.register(r'sync-kb', views.SyncKBViewSet, basename='sync-kb')
 router.register(r'smart-reports', views.SmartReportTemplateViewSet, basename='smart-reports')
 router.register(r'send-reports', views.SendReportEmailsViewSet, basename='send-emails')
 router.register(r'send-alarms', views.SendAlarmEmailsViewSet, basename='send-alarms')
+router.register(r'chat', views.ChatViewSet)
+router.register(r"send-mail", views.SendMailViewSet, basename="send-mail")
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [path("", include(router.urls))]
