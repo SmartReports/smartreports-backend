@@ -95,8 +95,12 @@ def kb_interface(params):
 
         
         for kb_resp in kb_resps:
-            kb_resp['value'].append(random.random()) # TODO actual prediction
-            kb_resp['value'].append(random.random()) 
+            sign = random.choice([-1, 1])
+            percentage = random.uniform(0.3, 0.4)
+            kb_resp['value'].append(kb_resp['value'][-1] + (sign * percentage * kb_resp['value'][-1] ))# TODO actual prediction
+            sign = sign * -1
+            percentage = random.uniform(0.3, 0.4)
+            kb_resp['value'].append(kb_resp['value'][-1] + (sign * percentage * kb_resp['value'][-1] )) 
 
             
 
