@@ -1,5 +1,6 @@
 from .sync_db_kb import get_kpi_value
 import random
+import copy
 
 
 def kb_interface(params):
@@ -39,7 +40,8 @@ def kb_interface(params):
         'rgb(255, 205, 86)'
     ]
     transp_colors = [color[:-1]+', 0.2)' for color in colors]
-    frequencies_lbls = {
+    
+    frequencies_lbls_main = {
         'annual': [
             'January',
             'February',
@@ -56,15 +58,17 @@ def kb_interface(params):
         ],
         'daily': [str(i)+':00' for i in range(24)],
         'weekly': [
+            'Tuesday',
             'Wednesday',
             'Thursday',
             'Friday',
             'Saturday',
             'Sunday',
             'Monday',
-            'Tuesday',
         ]
     }
+
+    frequencies_lbls = copy.deepcopy(frequencies_lbls_main)
 
     # if frequency == 'monthly':
         # start_freq = start_time.month # int in [0,11]
@@ -86,8 +90,8 @@ def kb_interface(params):
 
     if predict:
         for key, value in frequencies_lbls.items():
-            value.append(['Monday' ,'Prediction'])  # TODO start after the current date
-            value.append(['Tuesday' ,'Prediction'])
+            value.append(['Tuesday' ,'Prediction'])  # TODO start after the current date
+            value.append(['Wednesday' ,'Prediction'])
 
         
         for kb_resp in kb_resps:

@@ -1,6 +1,7 @@
 import requests
 from .models import Kpi
 import random
+import copy
 
 BASE_URL = 'https://industrial-smartapp-api.onrender.com'
 USERNAME = 'smartapp'
@@ -67,12 +68,14 @@ def get_kpi_value(kpi_uid, start_time=0, end_time=0):
     # return kpi_value.json()['data']
 
     name = Kpi.objects.get(kb_uid=kpi_uid).kb_name
+
+    simo_kpi_copy = copy.deepcopy(simo_kpi)
     
     if kpi_uid.startswith('all'): # kpi di simone
         kpi_value = {
             'data' : {
                 'name' : name,
-                'value' : simo_kpi[kpi_uid]
+                'value' : simo_kpi_copy[kpi_uid]
             }
         }
 
