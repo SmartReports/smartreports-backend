@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright, Playwright
 
-url = 'https://smartreports.it'
+url = 'https://smartreports-frontend.vercel.app'
 path = '../archive/example'
 
 

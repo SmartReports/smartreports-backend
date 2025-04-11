@@ -10,7 +10,7 @@ from urllib3.util.retry import Retry
 
 class TemplateRender:
     def __init__(self,
-                 api_base: str = "https://api.smartreports.it/",
+                 api_base: str = "https://smartreports-backend.vercel.app",
                  api_report_endpoint: str = 'report-templates/',
                  api_archive_endpoint: str = '/report-archive/',
                  api_kpis_data_endpoint: str = '/kpi-data/',

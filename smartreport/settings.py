@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     "localhost",
     ".vercel.app",
     ".now.sh",
-    "api.smartreports.it",
+    "smartreports-backend.vercel.app",
 ]
 
 
@@ -90,7 +90,7 @@ WSGI_APPLICATION = "smartreport.wsgi.application"
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "http://smartreports.it",
+    "https://smartreports-frontend.vercel.app",
     "http://smartreports-frontend.vercel.app",
 ]
 
